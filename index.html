@@ -147,7 +147,16 @@
       const contentWrapper = document.querySelector('.content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.querySelector('.overlay-content');
-      const audio = document.getElementById('background-audio'); // Get the audio element
+      const audio = document.getElementById('background-audio');
+
+      // === NEW: TRY TO PLAY MUSIC AT THE VERY BEGINNING ===
+      let playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log("Autoplay was prevented. Waiting for user interaction to play music.");
+          document.body.addEventListener('click', () => audio.play(), { once: true });
+        });
+      }
 
       // Sequence
       setTimeout(() => {
@@ -169,16 +178,6 @@
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
-
-        // NEW: Try to play music after intro
-        let playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.log("Autoplay was prevented. Waiting for user interaction to play music.");
-            // Listen for the first click anywhere on the page to start the music
-            document.body.addEventListener('click', () => audio.play(), { once: true });
-          });
-        }
         
         setTimeout(() => {
           preloader.style.display = 'none';
