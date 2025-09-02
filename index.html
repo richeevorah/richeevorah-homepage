@@ -26,20 +26,24 @@
     
     #canvas { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 0; }
     
+    /* === UPDATED NAVIGATION BAR STYLES === */
     .main-nav {
       padding: 1.5rem 2rem;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end; /* Pushes links to the right */
       align-items: center;
-      position: relative;
+      position: relative; /* Needed for absolute positioning of the logo */
       z-index: 10;
     }
     .nav-logo {
       font-family: 'GFS Didot', serif;
       font-size: 1.5rem;
-      font-weight: 400;
       color: var(--text-color);
       text-decoration: none;
+      /* New rules to center the logo */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
     .nav-links a {
       font-family: 'Cinzel', serif;
@@ -55,8 +59,10 @@
       border-bottom: 2px solid var(--text-color);
     }
     
-    section, footer { padding: 1rem 2rem; position: relative; z-index: 10; text-align: center;}
+    section, footer { padding: 1rem 2rem; position: relative; z-index: 10; }
+    footer { text-align: center; }
 
+    /* Preloader Styles (No Changes) */
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
     .panel { flex: 1; height: 100%; background-color: var(--dark-panel-color); transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
     .panel.hidden { transform: translateY(-100%); }
@@ -82,10 +88,6 @@
 
   <div class="content-wrapper">
     <canvas id="canvas"></canvas>
-
-    <audio id="background-audio" loop>
-      <source src="background-music.mp3" type="audio/mpeg">
-    </audio>
     
     <nav class="main-nav">
       <a href="#" class="nav-logo">Riché Evorah</a>
@@ -97,7 +99,7 @@
     </nav>
 
     <section id="home">
-      <div style="padding: 4rem 0;">
+      <div style="text-align: left; padding: 4rem 0 4rem 5%;">
         <h1 class="hero-text">Riché Evorah</h1>
         <p>championship collection out now!</p>
       </div>
@@ -147,18 +149,7 @@
       const contentWrapper = document.querySelector('.content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.querySelector('.overlay-content');
-      const audio = document.getElementById('background-audio');
 
-      // === NEW: TRY TO PLAY MUSIC AT THE VERY BEGINNING ===
-      let playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.log("Autoplay was prevented. Waiting for user interaction to play music.");
-          document.body.addEventListener('click', () => audio.play(), { once: true });
-        });
-      }
-
-      // Sequence
       setTimeout(() => {
         num3.classList.add('visible');
         setTimeout(() => panelLeft.classList.add('hidden'), 1000);
