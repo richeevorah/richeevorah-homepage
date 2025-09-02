@@ -7,7 +7,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: #EAE5DD; 
@@ -16,7 +16,6 @@
     }
     body { 
       margin: 0; 
-      /* Global font is now GFS Didot */
       font-family: 'GFS Didot', serif; 
       background-color: var(--bg-color); 
       color: var(--text-color);
@@ -36,14 +35,15 @@
       z-index: 10;
     }
     .nav-logo {
+      font-family: 'GFS Didot', serif;
       font-size: 1.5rem;
       font-weight: 400;
       color: var(--text-color);
       text-decoration: none;
     }
     .nav-links a {
-      /* CHANGED: Font is now GFS Didot */
-      font-size: 1.1rem; /* Slightly increased size for readability */
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
       color: var(--text-color);
       text-decoration: none;
       margin-left: 2rem;
@@ -61,27 +61,10 @@
     .panel { flex: 1; height: 100%; background-color: var(--dark-panel-color); transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
     .panel.hidden { transform: translateY(-100%); }
     .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
-    
-    .countdown-number {
-      position: absolute;
-      /* CHANGED: Font is now GFS Didot */
-      font-family: 'GFS Didot', serif;
-      font-size: 20vw; /* Adjusted size for the different font style */
-      color: var(--text-color);
-      opacity: 0;
-    }
+    .countdown-number { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 25vw; color: var(--text-color); opacity: 0; }
     .countdown-number.visible { animation: flash 1s ease-in-out forwards; }
     @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
-    
-    .brand-name-reveal { 
-      position: absolute; 
-      font-family: 'GFS Didot', serif; 
-      font-size: 5vw; 
-      color: var(--text-color); 
-      opacity: 0; 
-      transform: scale(0.9); 
-      transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); 
-    }
+    .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
     .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
     
     .hero-text { font-family: 'GFS Didot', serif; font-size: 3.5rem; font-weight: 400; color: var(--text-color); margin-bottom: 1rem; }
@@ -99,6 +82,10 @@
 
   <div class="content-wrapper">
     <canvas id="canvas"></canvas>
+
+    <audio id="background-audio" loop>
+      <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
     
     <nav class="main-nav">
       <a href="#" class="nav-logo">Riché Evorah</a>
@@ -160,35 +147,38 @@
       const contentWrapper = document.querySelector('.content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.querySelector('.overlay-content');
+      const audio = document.getElementById('background-audio'); // Get the audio element
 
-      // Step 1: Flash 3, then hide LEFT panel
+      // Sequence
       setTimeout(() => {
         num3.classList.add('visible');
         setTimeout(() => panelLeft.classList.add('hidden'), 1000);
       }, 500);
-
-      // Step 2: Flash 2, then hide RIGHT panel
       setTimeout(() => {
         num2.classList.add('visible');
         setTimeout(() => panelRight.classList.add('hidden'), 1000);
       }, 1800);
-
-      // Step 3: Flash 1, then hide MIDDLE panel
       setTimeout(() => {
         num1.classList.add('visible');
         setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
       }, 3100);
-
-      // Step 4: Show brand name
       setTimeout(() => {
         brandName.classList.add('visible');
       }, 4300);
-
-      // Step 5: Reveal homepage
       setTimeout(() => {
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
+
+        // NEW: Try to play music after intro
+        let playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.log("Autoplay was prevented. Waiting for user interaction to play music.");
+            // Listen for the first click anywhere on the page to start the music
+            document.body.addEventListener('click', () => audio.play(), { once: true });
+          });
+        }
         
         setTimeout(() => {
           preloader.style.display = 'none';
