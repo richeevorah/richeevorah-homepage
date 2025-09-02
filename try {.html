@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riché Evorah</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #EAE5DD; 
+      --text-color: #B59A72;
+      --dark-panel-color: #1A1A1A;
+    }
+    body { 
+      margin: 0; 
+      font-family: 'GFS Didot', serif; 
+      background-color: var(--bg-color); 
+      color: var(--text-color);
+    }
+    body.preloader-active { overflow: hidden; }
+    .content-wrapper { opacity: 0; transition: opacity 0.8s ease-in; }
+    .content-wrapper.visible { opacity: 1; }
+    
+    #canvas { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 0; }
+    
+    .main-nav {
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+    .nav-logo {
+      font-family: 'GFS Didot', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-color);
+      text-decoration: none;
+    }
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--text-color);
+      text-decoration: none;
+      margin-left: 2rem;
+      padding-bottom: 5px;
+      border-bottom: 2px solid transparent;
+      transition: border-bottom 0.3s ease;
+    }
+    .nav-links a:hover {
+      border-bottom: 2px solid var(--text-color);
+    }
+    
+    section, footer { padding: 1rem 2rem; position: relative; z-index: 10; }
+
+    #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
+    .panel { flex: 1; height: 100%; background-color: var(--dark-panel-color); transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
+    .panel.hidden { transform: translateY(-100%); }
+    .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .countdown-number { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 25vw; color: var(--text-color); opacity: 0; }
+    .countdown-number.visible { animation: flash 1s ease-in-out forwards; }
+    @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
+    .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
+    
+    .hero-text { font-family: 'GFS Didot', serif; font-size: 3.5rem; font-weight: 400; color: var(--text-color); margin-bottom: 1rem; }
+  </style>
+</head>
+<body class="preloader-active">
+
+  <div id="preloader">
+    <div class="panel" id="panel-1"></div><div class="panel" id="panel-2"></div><div class="panel" id="panel-3"></div>
+  </div>
+  <div class="overlay-content">
+    <div class="countdown-number" id="num3">3</div><div class="countdown-number" id="num2">2</div><div class="countdown-number" id="num1">1</div>
+    <div class="brand-name-reveal" id="brand-name">RICHÉ EVORAH</div>
+  </div>
+
+  <div class="content-wrapper">
+    <canvas id="canvas"></canvas>
+    
+    <nav class="main-nav">
+      <a href="#" class="nav-logo">Riché Evorah</a>
+      <div class="nav-links">
+        <a href="#">Collections</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </div>
+    </nav>
+
+    <section id="home">
+      <div style="text-align: center; padding: 4rem 0;">
+        <h1 class="hero-text">Riché Evorah</h1>
+        <p>championship collection out now!</p>
+      </div>
+    </section>
+    
+    <footer></footer>
+  </div>
+
+  <script>
+    // === SCRIPT IS NOW WRAPPED TO PREVENT ERRORS ===
+    window.addEventListener('load', () => {
+      // 3D Pearl Field Script
+      try {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
+        renderer.setClearColor(0x000000, 0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 50;
+        
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        for (let i = 0; i < particlesCount * 3; i++) {
+          posArray[i] = (Math.random() - 0.5) * 100;
+        }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const textureLoader = new THREE.TextureLoader();
+        const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
+        const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xB59A72, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        function animate3D() {
+          requestAnimationFrame(animate3D);
+          particlesMesh.rotation.y += 0.0005;
+          renderer.render(scene, camera);
+        }
+        animate3D();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      } catch (error) { console.error('Error with 3D scene:', error); }
+
+      // Preloader Script
+      const p1 = document.getElementById('panel-1');
+      const p2 = document.getElementById('panel-3');
+      const p3 = document.getElementById('panel-2');
+      const num3 = document.getElementById('num3');
+      const num2 = document.getElementById('num2');
+      const num1 = document.getElementById('num1');
+      const brandName = document.getElementById('brand-name');
+      const contentWrapper = document.querySelector('.content-wrapper');
+      const preloader = document.getElementById('preloader');
+      const overlayContent = document.querySelector('.overlay-content');
+
+      setTimeout(() => { num3.classList.add('visible'); setTimeout(() => p1.classList.add('hidden'), 1000); }, 500);
+      setTimeout(() => { num2.classList.add('visible'); setTimeout(() => p2.classList.add('hidden'), 1000); }, 1800);
+      setTimeout(() => { num1.classList.add('visible'); setTimeout(() => p3.classList.add('hidden'), 1000); }, 3100);
+      setTimeout(() => { brandName.classList.add('visible'); }, 4300);
+      setTimeout(() => {
+        overlayContent.style.opacity = 0;
+        contentWrapper.classList.add('visible');
+        document.body.classList.remove('preloader-active');
+        setTimeout(() => {
+          preloader.style.display = 'none';
+          overlayContent.style.display = 'none';
+        }, 1200);
+      }, 5800);
+    });
+  </script>
+</body>
+</html>
