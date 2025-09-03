@@ -42,6 +42,10 @@
       text-decoration: none;
       color: var(--text-color);
     }
+    .nav-right-cluster {
+      display: flex;
+      align-items: center;
+    }
     .nav-links-desktop {
       display: flex;
       align-items: center;
@@ -98,9 +102,11 @@
       .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
       .main-nav { justify-content: flex-end; }
       .nav-links-mobile { display: none; }
+      .hamburger { display: none; }
     }
     @media (max-width: 768px) {
       .nav-links-desktop { display: none; }
+      .nav-logo { flex-grow: 1; } /* Allow logo to take space */
       .nav-links-mobile {
         position: fixed;
         top: 0;
@@ -197,16 +203,18 @@
     
     <nav class="main-nav">
       <a href="#" class="nav-logo">Riché Evorah</a>
-      <div class="nav-links-desktop">
-        <a href="#">Collections</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+      <div class="nav-right-cluster">
+        <div class="nav-links-desktop">
+          <a href="#">Collections</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </div>
         <div class="music-toggle" id="music-toggle">
           <svg class="music-waves" viewBox="0 0 24 24"><path d="M3 10h3v4H3z M8 6h3v12H8z M13 2h3v20h-3z M18 6h3v12h-3z"></path></svg>
           <svg class="music-slash" viewBox="0 0 24 24"><path d="M4.75 3.25a.75.75 0 00-1.5 0v17.5a.75.75 0 001.5 0V3.25z" transform="rotate(45 12 12)"></path></svg>
         </div>
+        <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
       </div>
-      <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
     </nav>
     
     <div class="nav-links-mobile" id="nav-links-mobile">
@@ -261,7 +269,6 @@
 
         let scrollY = window.scrollY;
         let scrollSpeed = 0;
-
         window.addEventListener('scroll', () => {
           const newScrollY = window.scrollY;
           scrollSpeed = (newScrollY - scrollY) * 0.0001;
