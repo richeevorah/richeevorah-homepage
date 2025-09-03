@@ -62,7 +62,6 @@
     
     .close-btn { position: absolute; top: 1.5rem; right: 2rem; font-size: 2.5rem; color: var(--text-color); cursor: pointer; }
 
-    /* === NEW MUSIC TOGGLE STYLES === */
     .music-toggle {
       width: 24px;
       height: 24px;
@@ -98,14 +97,11 @@
       100% { transform: scaleY(0.3); }
     }
 
-    /* DESKTOP LAYOUT */
     @media (min-width: 769px) {
       .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
       .main-nav { justify-content: flex-end; }
       .nav-links-mobile { display: none; }
     }
-
-    /* MOBILE LAYOUT */
     @media (max-width: 768px) {
       .nav-links-desktop { display: none; }
       .nav-links-mobile {
@@ -130,20 +126,80 @@
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
-    /* ... other styles remain the same ... */
+    footer { text-align: center; padding: 2rem; position: relative; z-index: 10; color: var(--subtle-text-color); }
 
+    .hero-section {
+      text-align: left;
+      padding: 4rem 5%;
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-text { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .hero-section p { font-size: 1.2rem; color: var(--subtle-text-color); }
+    
+    .product-showcase {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 5rem 2rem;
+      background-color: transparent;
+    }
+    .product-text h2 { font-family: 'Cinzel', serif; font-size: 3rem; margin: 0; }
+    .product-text p { font-family: 'GFS Didot', serif; font-size: 1.2rem; margin: 1rem 0 2rem 0; color: var(--subtle-text-color); }
+    .product-cta a {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      margin: 0 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .cta-buy {
+      background-color: var(--text-color);
+      color: var(--bg-color);
+      border: 1px solid var(--text-color);
+    }
+    .cta-learn {
+      background-color: transparent;
+      color: var(--text-color);
+      border: 1px solid var(--text-color);
+    }
+    .product-image img { width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto; }
+    .product-text, .product-image { flex: 1; min-width: 300px; padding: 2rem; }
+
+    #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
+    .panel { flex: 1; height: 100%; background-color: var(--panel-color); transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
+    .panel.hidden { transform: translateY(-100%); }
+    .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .countdown-number { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 25vw; color: var(--text-color); opacity: 0; }
+    .countdown-number.visible { animation: flash 1s ease-in-out forwards; }
+    @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
+    .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
   </style>
 </head>
 <body class="preloader-active">
 
-  <div id="preloader"></div>
-  <div class="overlay-content" id="overlay-content"></div>
+  <div id="preloader">
+    <div class="panel" id="panel-1"></div>
+    <div class="panel" id="panel-2"></div>
+    <div class="panel" id="panel-3"></div>
+  </div>
+  <div class="overlay-content" id="overlay-content">
+    <div class="countdown-number" id="num3">3</div>
+    <div class="countdown-number" id="num2">2</div>
+    <div class="countdown-number" id="num1">1</div>
+    <div class="brand-name-reveal" id="brand-name">RICHÉ EVORAH</div>
+  </div>
 
   <div class="content-wrapper" id="content-wrapper">
     <canvas id="canvas"></canvas>
-    
     <audio id="background-audio" loop>
-        <source src="background-music.mp3" type="audio/mpeg">
+      <source src="background-music.mp3" type="audio/mpeg">
     </audio>
     
     <nav class="main-nav">
@@ -167,25 +223,64 @@
       <a href="#">Contact</a>
     </div>
 
-    <section id="home" class="hero-section"></section>
-    <section class="product-showcase"></section>
-    <footer></footer>
+    <section id="home" class="hero-section">
+      <div>
+        <h1 class="hero-text">Riché Evorah</h1>
+        <p>championship collection out now!</p>
+      </div>
+    </section>
+    <section class="product-showcase">
+      <div class="product-text">
+        <h2>The Boston Varsity Tee</h2>
+        <p>A timeless design, reimagined with unparalleled craftsmanship.</p>
+        <div class="product-cta">
+          <a href="#" class="cta-buy">Shop Now</a>
+          <a href="#" class="cta-learn">Learn More</a>
+        </div>
+      </div>
+      <div class="product-image">
+        <img src="your-product-image.png" alt="Boston Varsity T-Shirt">
+      </div>
+    </section>
+    <footer><p>© 2025 Riché Evorah</p></footer>
   </div>
 
   <script>
     window.addEventListener('load', () => {
       // 3D Smoke Script
-      try { /* ... */ } catch (error) { console.error(error); }
+      try {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 1.5;
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
+        renderer.setClearColor(0x000000, 0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        const simplex = new SimplexNoise();
+        const geometry = new THREE.PlaneGeometry(4, 4, 128, 128);
+        const material = new THREE.MeshBasicMaterial({ color: 0xD4AF37, wireframe: true, transparent: true, opacity: 0.15 });
+        const plane = new THREE.Mesh(geometry, material);
+        scene.add(plane);
+        const clock = new THREE.Clock();
+        function animate3D() {
+          requestAnimationFrame(animate3D);
+          const t = clock.getElapsedTime() * 0.1;
+          geometry.vertices.forEach(v => {
+            v.z = simplex.noise3D(v.x * 1.5, v.y * 1.5, t) * 0.3;
+          });
+          geometry.verticesNeedUpdate = true;
+          renderer.render(scene, camera);
+        }
+        animate3D();
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+      } catch (error) { console.error('Error with 3D scene:', error); }
 
       const audio = document.getElementById('background-audio');
-      
       const hamburger = document.getElementById('hamburger');
       const navLinksMobile = document.getElementById('nav-links-mobile');
       const closeBtn = document.getElementById('close-btn');
       hamburger.addEventListener('click', () => { navLinksMobile.classList.add('active'); });
       closeBtn.addEventListener('click', () => { navLinksMobile.classList.remove('active'); });
 
-      // Music Toggle Script
       const musicToggle = document.getElementById('music-toggle');
       musicToggle.addEventListener('click', () => {
         if (audio.paused) {
@@ -197,17 +292,36 @@
         }
       });
       
-      // Preloader Script
+      const panelLeft = document.getElementById('panel-1');
+      const panelMiddle = document.getElementById('panel-2');
+      const panelRight = document.getElementById('panel-3');
+      const num3 = document.getElementById('num3');
+      const num2 = document.getElementById('num2');
+      const num1 = document.getElementById('num1');
+      const brandName = document.getElementById('brand-name');
       const contentWrapper = document.getElementById('content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.getElementById('overlay-content');
       
-      // The main reveal timeout from our stable version
+      setTimeout(() => {
+        num3.classList.add('visible');
+        setTimeout(() => panelLeft.classList.add('hidden'), 1000);
+      }, 500);
+      setTimeout(() => {
+        num2.classList.add('visible');
+        setTimeout(() => panelRight.classList.add('hidden'), 1000);
+      }, 1800);
+      setTimeout(() => {
+        num1.classList.add('visible');
+        setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
+      }, 3100);
+      setTimeout(() => {
+        brandName.classList.add('visible');
+      }, 4300);
       setTimeout(() => {
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
-        
         let playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -222,15 +336,11 @@
             }, { once: true });
           });
         }
-        
         setTimeout(() => {
           preloader.style.display = 'none';
           overlayContent.style.display = 'none';
         }, 1200);
-      }, 5800); 
-
-      // The rest of your preloader animation timeouts
-      // setTimeout(...) for num3, num2, num1, brandName...
+      }, 5800);
     });
   </script>
 </body>
