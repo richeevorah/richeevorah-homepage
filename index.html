@@ -45,18 +45,23 @@
       text-decoration: none;
       color: var(--text-color);
     }
-    .nav-links-container {
+    .nav-links-desktop {
       display: flex;
       align-items: center;
     }
-    .nav-links a {
+    .nav-links-desktop a {
       font-family: 'Cinzel', serif;
       font-size: 1rem;
       color: var(--text-color);
       text-decoration: none;
       margin-left: 2rem;
     }
+
+    .hamburger { display: none; cursor: pointer; z-index: 10001; }
+    .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px 0; }
     
+    .close-btn { position: absolute; top: 1.5rem; right: 2rem; font-size: 2.5rem; color: var(--text-color); cursor: pointer; }
+
     /* === NEW MUSIC TOGGLE STYLES === */
     .music-toggle {
       width: 24px;
@@ -81,17 +86,10 @@
     .music-waves path:nth-child(3) { animation-delay: -0.6s; }
     .music-waves path:nth-child(4) { animation-delay: -0.9s; }
     
-    .music-slash {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+    .music-slash { opacity: 0; transition: opacity 0.3s ease; }
     
-    .music-toggle.muted .music-waves path {
-      animation-play-state: paused;
-    }
-    .music-toggle.muted .music-slash {
-      opacity: 1;
-    }
+    .music-toggle.muted .music-waves path { animation-play-state: paused; }
+    .music-toggle.muted .music-slash { opacity: 1; }
 
     @keyframes wave {
       0% { transform: scaleY(0.3); }
@@ -100,17 +98,17 @@
       100% { transform: scaleY(0.3); }
     }
 
-    .hamburger { display: none; cursor: pointer; z-index: 10001; }
-    .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px 0; }
-    
-    .close-btn { position: absolute; top: 1.5rem; right: 2rem; font-size: 2.5rem; color: var(--text-color); cursor: pointer; }
-
+    /* DESKTOP LAYOUT */
     @media (min-width: 769px) {
       .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
       .main-nav { justify-content: flex-end; }
+      .nav-links-mobile { display: none; }
     }
+
+    /* MOBILE LAYOUT */
     @media (max-width: 768px) {
-      .nav-links {
+      .nav-links-desktop { display: none; }
+      .nav-links-mobile {
         position: fixed;
         top: 0;
         left: 0;
@@ -126,21 +124,14 @@
         transition: opacity 0.5s, visibility 0.5s;
         z-index: 10000;
       }
-      .nav-links.active { opacity: 1; visibility: visible; }
-      .nav-links a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); }
+      .nav-links-mobile.active { opacity: 1; visibility: visible; }
+      .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
-      .music-toggle { display: none; } /* Hide toggle from main nav on mobile */
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
-    footer { text-align: center; padding: 2rem; position: relative; z-index: 10; color: var(--subtle-text-color); }
+    /* ... other styles remain the same ... */
 
-    /* Other styles remain the same */
-    .hero-section { text-align: left; padding: 4rem 5%; min-height: 50vh; display: flex; flex-direction: column; justify-content: center; }
-    .hero-text { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
-    .hero-section p { font-size: 1.2rem; color: var(--subtle-text-color); }
-    #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
-    /* ... all other styles ... */
   </style>
 </head>
 <body class="preloader-active">
@@ -157,21 +148,19 @@
     
     <nav class="main-nav">
       <a href="#" class="nav-logo">Riché Evorah</a>
-      <div class="nav-links-container">
-        <div class="nav-links">
-          <a href="#">Collections</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-        </div>
+      <div class="nav-links-desktop">
+        <a href="#">Collections</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
         <div class="music-toggle" id="music-toggle">
           <svg class="music-waves" viewBox="0 0 24 24"><path d="M3 10h3v4H3z M8 6h3v12H8z M13 2h3v20h-3z M18 6h3v12h-3z"></path></svg>
           <svg class="music-slash" viewBox="0 0 24 24"><path d="M4.75 3.25a.75.75 0 00-1.5 0v17.5a.75.75 0 001.5 0V3.25z" transform="rotate(45 12 12)"></path></svg>
         </div>
-        <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
       </div>
+      <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
     </nav>
     
-    <div class="nav-links" id="nav-links-mobile">
+    <div class="nav-links-mobile" id="nav-links-mobile">
       <div class="close-btn" id="close-btn">&times;</div>
       <a href="#">Collections</a>
       <a href="#">About</a>
@@ -188,17 +177,15 @@
       // 3D Smoke Script
       try { /* ... */ } catch (error) { console.error(error); }
 
-      // Get audio element
       const audio = document.getElementById('background-audio');
-
-      // Hamburger Menu Script
+      
       const hamburger = document.getElementById('hamburger');
       const navLinksMobile = document.getElementById('nav-links-mobile');
       const closeBtn = document.getElementById('close-btn');
       hamburger.addEventListener('click', () => { navLinksMobile.classList.add('active'); });
       closeBtn.addEventListener('click', () => { navLinksMobile.classList.remove('active'); });
 
-      // === NEW MUSIC TOGGLE SCRIPT ===
+      // Music Toggle Script
       const musicToggle = document.getElementById('music-toggle');
       musicToggle.addEventListener('click', () => {
         if (audio.paused) {
@@ -211,11 +198,11 @@
       });
       
       // Preloader Script
-      const preloader = document.getElementById('preloader');
       const contentWrapper = document.getElementById('content-wrapper');
+      const preloader = document.getElementById('preloader');
       const overlayContent = document.getElementById('overlay-content');
       
-      // This is the main reveal timeout
+      // The main reveal timeout from our stable version
       setTimeout(() => {
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
@@ -224,10 +211,8 @@
         let playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
-            // Autoplay started!
             musicToggle.classList.remove('muted');
           }).catch(error => {
-            // Autoplay was prevented.
             musicToggle.classList.add('muted');
             document.body.addEventListener('click', () => {
               if (audio.paused) {
@@ -242,11 +227,10 @@
           preloader.style.display = 'none';
           overlayContent.style.display = 'none';
         }, 1200);
-      }, 5800); // This should match your full preloader duration
+      }, 5800); 
 
       // The rest of your preloader animation timeouts
       // setTimeout(...) for num3, num2, num1, brandName...
-
     });
   </script>
 </body>
