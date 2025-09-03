@@ -119,42 +119,57 @@
     footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
 
     .hero-section {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 2rem 5%;
-      min-height: 80vh;
-    }
-    .hero-text-content {
-      flex-basis: 45%;
       text-align: left;
+      padding: 4rem 5%;
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
     
-    .hero-visual {
-      flex-basis: 45%;
+    .product-showcase {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 5rem 2rem;
+      background-color: transparent;
+      color: var(--text-color);
     }
-    .falling-tee {
-      width: 100%;
-      max-width: 400px;
-      opacity: 0; /* Start hidden */
-      animation: fallIn 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s forwards;
+    .product-text h6 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: 400;
     }
-    
-    @keyframes fallIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-120%) rotateZ(-15deg);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) rotateZ(0deg);
-      }
+    .product-text p {
+      font-family: 'GFS Didot', serif;
+      font-size: 1.2rem;
+      margin: 1rem 0 2rem 0;
     }
-    
+    .product-cta a {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      margin: 0 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .cta-buy {
+      background-color: var(--text-color);
+      color: var(--bg-color);
+      border: 1px solid var(--text-color);
+    }
+    .cta-learn {
+      background-color: transparent;
+      color: var(--text-color);
+      border: 1px solid var(--text-color);
+    }
+    .product-image img { width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto; }
+    .product-text, .product-image { flex: 1; min-width: 300px; padding: 2rem; }
+
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
     .panel { flex: 1; height: 100%; background-color: #1A1A1A; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
     .panel.hidden { transform: translateY(-100%); }
@@ -212,15 +227,24 @@
     </div>
 
     <section id="home" class="hero-section">
-      <div class="hero-text-content">
+      <div>
         <h1 class="hero-text">Riché Evorah</h1>
-        <p>Timeless Luxury, Unrivaled Elegance.</p>
-      </div>
-      <div class="hero-visual">
-        <img src="hanger-tee.png" alt="Riché Evorah T-Shirt" class="falling-tee">
+        <p>championship collection out now!</p>
       </div>
     </section>
-    
+    <section class="product-showcase">
+      <div class="product-text">
+        <h6>The Boston Varsity Tee</h6>
+        <p>A timeless design, reimagined with unparalleled craftsmanship.</p>
+        <div class="product-cta">
+          <a href="#" class="cta-buy">Shop Now</a>
+          <a href="#" class="cta-learn">Learn More</a>
+        </div>
+      </div>
+      <div class="product-image">
+        <img src="your-product-image.png" alt="Boston Varsity T-Shirt">
+      </div>
+    </section>
     <footer><p>© 2025 Riché Evorah</p></footer>
   </div>
 
@@ -245,8 +269,18 @@
         const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
         scene.add(particlesMesh);
 
+        let scrollY = window.scrollY;
+        let scrollSpeed = 0;
+        window.addEventListener('scroll', () => {
+          const newScrollY = window.scrollY;
+          scrollSpeed = (newScrollY - scrollY) * 0.0001;
+          scrollY = newScrollY;
+        });
+
         function animate3D() {
           requestAnimationFrame(animate3D);
+          particlesMesh.rotation.y += scrollSpeed;
+          scrollSpeed *= 0.95; 
           particlesMesh.rotation.y += 0.0002;
           renderer.render(scene, camera);
         }
@@ -279,6 +313,7 @@
       const num2 = document.getElementById('num2');
       const num1 = document.getElementById('num1');
       const brandName = document.getElementById('brand-name');
+      // === THIS IS THE CORRECTED VARIABLE NAME ===
       const contentWrapper = document.getElementById('content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.getElementById('overlay-content');
