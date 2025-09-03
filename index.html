@@ -10,10 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #181818; 
-      --text-color: #D4AF37;
-      --subtle-text-color: #F5F5F5;
-      --panel-color: #000000;
+      --bg-color: #EAE5DD; 
+      --text-color: #B59A72;
+      --panel-color: #1A1A1A;
     }
     body { 
       margin: 0; 
@@ -36,13 +35,23 @@
       top: 0;
       background-color: var(--bg-color);
       z-index: 100;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
     .nav-logo {
       font-family: 'GFS Didot', serif;
       font-size: 1.5rem;
       text-decoration: none;
       color: var(--text-color);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .nav-left-cluster, .nav-right-cluster {
+      display: flex;
+      align-items: center;
+      flex-basis: 33.33%;
+    }
+    .nav-right-cluster {
+      justify-content: flex-end;
     }
     .nav-links-desktop {
       display: flex;
@@ -53,7 +62,7 @@
       font-size: 1rem;
       color: var(--text-color);
       text-decoration: none;
-      margin-left: 2rem;
+      margin-right: 2rem;
     }
 
     .hamburger { display: none; cursor: pointer; z-index: 10001; }
@@ -66,7 +75,6 @@
       height: 24px;
       cursor: pointer;
       position: relative;
-      margin-left: 2rem;
     }
     .music-waves, .music-slash {
       position: absolute;
@@ -76,16 +84,11 @@
       height: 100%;
       fill: var(--text-color);
     }
-    .music-waves path {
-      animation: wave 1.5s linear infinite;
-      transform-origin: bottom;
-    }
+    .music-waves path { animation: wave 1.5s linear infinite; transform-origin: bottom; }
     .music-waves path:nth-child(2) { animation-delay: -0.3s; }
     .music-waves path:nth-child(3) { animation-delay: -0.6s; }
     .music-waves path:nth-child(4) { animation-delay: -0.9s; }
-    
     .music-slash { opacity: 0; transition: opacity 0.3s ease; }
-    
     .music-toggle.muted .music-waves path { animation-play-state: paused; }
     .music-toggle.muted .music-slash { opacity: 1; }
 
@@ -95,27 +98,17 @@
     }
 
     @media (min-width: 769px) {
-      .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
-      .main-nav { justify-content: flex-end; }
+      .hamburger { display: none; }
       .nav-links-mobile { display: none; }
     }
     @media (max-width: 768px) {
       .nav-links-desktop { display: none; }
+      .nav-logo { font-size: 1.2rem; }
       .nav-links-mobile {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: var(--bg-color);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.5s, visibility 0.5s;
-        z-index: 10000;
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background-color: var(--bg-color); display: flex; flex-direction: column;
+        align-items: center; justify-content: center; opacity: 0; visibility: hidden;
+        transition: opacity 0.5s, visibility 0.5s; z-index: 10000;
       }
       .nav-links-mobile.active { opacity: 1; visibility: visible; }
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
@@ -123,7 +116,7 @@
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
-    footer { text-align: center; padding: 2rem; position: relative; z-index: 10; color: var(--subtle-text-color); }
+    footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
 
     .hero-section {
       text-align: left;
@@ -133,8 +126,7 @@
       flex-direction: column;
       justify-content: center;
     }
-    .hero-text { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
-    .hero-section p { font-size: 1.2rem; color: var(--subtle-text-color); }
+    .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
     
     .product-showcase {
       display: flex;
@@ -143,9 +135,10 @@
       flex-wrap: wrap;
       padding: 5rem 2rem;
       background-color: transparent;
+      color: var(--text-color);
     }
     .product-text h2 { font-family: 'Cinzel', serif; font-size: 3rem; margin: 0; }
-    .product-text p { font-family: 'GFS Didot', serif; font-size: 1.2rem; margin: 1rem 0 2rem 0; color: var(--subtle-text-color); }
+    .product-text p { font-family: 'GFS Didot', serif; font-size: 1.2rem; margin: 1rem 0 2rem 0; }
     .product-cta a {
       font-family: 'Cinzel', serif;
       display: inline-block;
@@ -200,17 +193,21 @@
     </audio>
     
     <nav class="main-nav">
+      <div class="nav-left-cluster">
+        <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
+      </div>
       <a href="#" class="nav-logo">Riché Evorah</a>
-      <div class="nav-links-desktop">
-        <a href="#">Collections</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+      <div class="nav-right-cluster">
+        <div class="nav-links-desktop">
+          <a href="#">Collections</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </div>
         <div class="music-toggle" id="music-toggle">
           <svg class="music-waves" viewBox="0 0 24 24"><path d="M3 10h3v4H3z M8 6h3v12H8z M13 2h3v20h-3z M18 6h3v12h-3z"></path></svg>
           <svg class="music-slash" viewBox="0 0 24 24"><path d="M4.75 3.25a.75.75 0 00-1.5 0v17.5a.75.75 0 001.5 0V3.25z" transform="rotate(45 12 12)"></path></svg>
         </div>
       </div>
-      <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
     </nav>
     
     <div class="nav-links-mobile" id="nav-links-mobile">
@@ -259,7 +256,7 @@
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         const textureLoader = new THREE.TextureLoader();
         const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
-        const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xD4AF37, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
+        const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xB59A72, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
         const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
         scene.add(particlesMesh);
 
