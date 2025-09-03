@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Riché Evorah</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -44,17 +43,6 @@
       font-size: 1.5rem;
       text-decoration: none;
       color: var(--text-color);
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .nav-left-cluster, .nav-right-cluster {
-      display: flex;
-      align-items: center;
-      flex-basis: 33.33%; /* Divide nav into three equal parts */
-    }
-    .nav-right-cluster {
-      justify-content: flex-end;
     }
     .nav-links-desktop {
       display: flex;
@@ -65,7 +53,7 @@
       font-size: 1rem;
       color: var(--text-color);
       text-decoration: none;
-      margin-right: 2rem;
+      margin-left: 2rem;
     }
 
     .hamburger { display: none; cursor: pointer; z-index: 10001; }
@@ -78,6 +66,7 @@
       height: 24px;
       cursor: pointer;
       position: relative;
+      margin-left: 2rem;
     }
     .music-waves, .music-slash {
       position: absolute;
@@ -87,11 +76,16 @@
       height: 100%;
       fill: var(--text-color);
     }
-    .music-waves path { animation: wave 1.5s linear infinite; transform-origin: bottom; }
+    .music-waves path {
+      animation: wave 1.5s linear infinite;
+      transform-origin: bottom;
+    }
     .music-waves path:nth-child(2) { animation-delay: -0.3s; }
     .music-waves path:nth-child(3) { animation-delay: -0.6s; }
     .music-waves path:nth-child(4) { animation-delay: -0.9s; }
+    
     .music-slash { opacity: 0; transition: opacity 0.3s ease; }
+    
     .music-toggle.muted .music-waves path { animation-play-state: paused; }
     .music-toggle.muted .music-slash { opacity: 1; }
 
@@ -101,17 +95,27 @@
     }
 
     @media (min-width: 769px) {
-      .hamburger { display: none; }
+      .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+      .main-nav { justify-content: flex-end; }
       .nav-links-mobile { display: none; }
     }
     @media (max-width: 768px) {
       .nav-links-desktop { display: none; }
-      .nav-logo { font-size: 1.2rem; }
       .nav-links-mobile {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background-color: var(--bg-color); display: flex; flex-direction: column;
-        align-items: center; justify-content: center; opacity: 0; visibility: hidden;
-        transition: opacity 0.5s, visibility 0.5s; z-index: 10000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--bg-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s, visibility 0.5s;
+        z-index: 10000;
       }
       .nav-links-mobile.active { opacity: 1; visibility: visible; }
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
@@ -119,7 +123,51 @@
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
-    /* ... all other styles remain the same ... */
+    footer { text-align: center; padding: 2rem; position: relative; z-index: 10; color: var(--subtle-text-color); }
+
+    .hero-section {
+      text-align: left;
+      padding: 4rem 5%;
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-text { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .hero-section p { font-size: 1.2rem; color: var(--subtle-text-color); }
+    
+    .product-showcase {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 5rem 2rem;
+      background-color: transparent;
+    }
+    .product-text h2 { font-family: 'Cinzel', serif; font-size: 3rem; margin: 0; }
+    .product-text p { font-family: 'GFS Didot', serif; font-size: 1.2rem; margin: 1rem 0 2rem 0; color: var(--subtle-text-color); }
+    .product-cta a {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      margin: 0 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .cta-buy {
+      background-color: var(--text-color);
+      color: var(--bg-color);
+      border: 1px solid var(--text-color);
+    }
+    .cta-learn {
+      background-color: transparent;
+      color: var(--text-color);
+      border: 1px solid var(--text-color);
+    }
+    .product-image img { width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto; }
+    .product-text, .product-image { flex: 1; min-width: 300px; padding: 2rem; }
+
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
     .panel { flex: 1; height: 100%; background-color: var(--panel-color); transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
     .panel.hidden { transform: translateY(-100%); }
@@ -134,10 +182,14 @@
 <body class="preloader-active">
 
   <div id="preloader">
-    <div class="panel" id="panel-1"></div><div class="panel" id="panel-2"></div><div class="panel" id="panel-3"></div>
+    <div class="panel" id="panel-1"></div>
+    <div class="panel" id="panel-2"></div>
+    <div class="panel" id="panel-3"></div>
   </div>
   <div class="overlay-content" id="overlay-content">
-    <div class="countdown-number" id="num3">3</div><div class="countdown-number" id="num2">2</div><div class="countdown-number" id="num1">1</div>
+    <div class="countdown-number" id="num3">3</div>
+    <div class="countdown-number" id="num2">2</div>
+    <div class="countdown-number" id="num1">1</div>
     <div class="brand-name-reveal" id="brand-name">RICHÉ EVORAH</div>
   </div>
 
@@ -148,21 +200,17 @@
     </audio>
     
     <nav class="main-nav">
-      <div class="nav-left-cluster">
-        <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
-      </div>
       <a href="#" class="nav-logo">Riché Evorah</a>
-      <div class="nav-right-cluster">
-        <div class="nav-links-desktop">
-          <a href="#">Collections</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-        </div>
+      <div class="nav-links-desktop">
+        <a href="#">Collections</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
         <div class="music-toggle" id="music-toggle">
           <svg class="music-waves" viewBox="0 0 24 24"><path d="M3 10h3v4H3z M8 6h3v12H8z M13 2h3v20h-3z M18 6h3v12h-3z"></path></svg>
           <svg class="music-slash" viewBox="0 0 24 24"><path d="M4.75 3.25a.75.75 0 00-1.5 0v17.5a.75.75 0 001.5 0V3.25z" transform="rotate(45 12 12)"></path></svg>
         </div>
       </div>
+      <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
     </nav>
     
     <div class="nav-links-mobile" id="nav-links-mobile">
@@ -196,27 +244,38 @@
 
   <script>
     window.addEventListener('load', () => {
-      // 3D Smoke Script
+      // 3D Pearl Field Script
       try {
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 1.5;
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
         renderer.setClearColor(0x000000, 0);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        const simplex = new SimplexNoise();
-        const geometry = new THREE.PlaneGeometry(4, 4, 128, 128);
-        const material = new THREE.MeshBasicMaterial({ color: 0xD4AF37, wireframe: true, transparent: true, opacity: 0.15 });
-        const plane = new THREE.Mesh(geometry, material);
-        scene.add(plane);
-        const clock = new THREE.Clock();
+        camera.position.z = 50;
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const textureLoader = new THREE.TextureLoader();
+        const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
+        const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xD4AF37, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        let scrollY = window.scrollY;
+        let scrollSpeed = 0;
+        window.addEventListener('scroll', () => {
+          const newScrollY = window.scrollY;
+          scrollSpeed = (newScrollY - scrollY) * 0.0001;
+          scrollY = newScrollY;
+        });
+
         function animate3D() {
           requestAnimationFrame(animate3D);
-          const t = clock.getElapsedTime() * 0.1;
-          geometry.vertices.forEach(v => {
-            v.z = simplex.noise3D(v.x * 1.5, v.y * 1.5, t) * 0.3;
-          });
-          geometry.verticesNeedUpdate = true;
+          particlesMesh.rotation.y += scrollSpeed;
+          scrollSpeed *= 0.95; 
+          particlesMesh.rotation.y += 0.0002;
           renderer.render(scene, camera);
         }
         animate3D();
