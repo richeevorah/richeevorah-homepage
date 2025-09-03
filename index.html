@@ -66,7 +66,6 @@
       transition: 0.4s;
     }
     
-    /* NEW: Close button for mobile menu */
     .close-btn {
       position: absolute;
       top: 1.5rem;
@@ -125,16 +124,13 @@
     }
     .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
     
-    /* === UPDATED PRODUCT SHOWCASE STYLES === */
     .product-showcase {
       display: flex;
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
       padding: 5rem 2rem;
-      /* CHANGED: No more white background */
       background-color: transparent;
-      /* CHANGED: Text color now uses the theme */
       color: var(--text-color);
     }
     .product-text {
@@ -162,7 +158,6 @@
       text-decoration: none;
       font-size: 1rem;
     }
-    /* CHANGED: Buttons now use the theme colors */
     .cta-buy {
       background-color: var(--text-color);
       color: var(--bg-color);
@@ -186,18 +181,29 @@
       margin: 0 auto;
     }
 
-    /* Preloader Styles */
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
-    /* ... other preloader styles ... */
+    .panel { flex: 1; height: 100%; background-color: #1A1A1A; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
+    .panel.hidden { transform: translateY(-100%); }
+    .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .countdown-number { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 25vw; color: var(--text-color); opacity: 0; }
+    .countdown-number.visible { animation: flash 1s ease-in-out forwards; }
+    @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
+    .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
 
   </style>
 </head>
 <body class="preloader-active">
 
-  <div id="preloader"></div>
-  <div class="overlay-content"></div>
+  <div id="preloader">
+    <div class="panel" id="panel-1"></div><div class="panel" id="panel-2"></div><div class="panel" id="panel-3"></div>
+  </div>
+  <div class="overlay-content" id="overlay-content">
+    <div class="countdown-number" id="num3">3</div><div class="countdown-number" id="num2">2</div><div class="countdown-number" id="num1">1</div>
+    <div class="brand-name-reveal" id="brand-name">RICHÉ EVORAH</div>
+  </div>
 
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="content-wrapper">
     <canvas id="canvas"></canvas>
     
     <nav class="main-nav">
@@ -238,7 +244,7 @@
 
   <script>
     window.addEventListener('load', () => {
-      // 3D Pearl Field Script
+      // 3D Pearl Field Script with Scroll
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
@@ -258,7 +264,6 @@
       const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
       scene.add(particlesMesh);
 
-      // === NEW: SCROLL ANIMATION LOGIC ===
       let scrollY = window.scrollY;
       let scrollSpeed = 0;
 
@@ -270,13 +275,9 @@
 
       function animate3D() {
         requestAnimationFrame(animate3D);
-        // Add scroll speed to rotation and apply damping
         particlesMesh.rotation.y += scrollSpeed;
-        scrollSpeed *= 0.95; // Damping effect
-        
-        // Add a slow, constant rotation
+        scrollSpeed *= 0.95; 
         particlesMesh.rotation.y += 0.0002;
-        
         renderer.render(scene, camera);
       }
       animate3D();
@@ -288,15 +289,48 @@
       const navLinks = document.getElementById('nav-links');
       const closeBtn = document.getElementById('close-btn');
 
-      hamburger.addEventListener('click', () => {
-        navLinks.classList.add('active');
-      });
-      closeBtn.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-      });
+      hamburger.addEventListener('click', () => { navLinks.classList.add('active'); });
+      closeBtn.addEventListener('click', () => { navLinks.classList.remove('active'); });
 
-      // Preloader Script
-      // ... (no changes to the preloader logic)
+      // === PRELOADER SCRIPT RESTORED ===
+      const panelLeft = document.getElementById('panel-1');
+      const panelMiddle = document.getElementById('panel-2');
+      const panelRight = document.getElementById('panel-3');
+      const num3 = document.getElementById('num3');
+      const num2 = document.getElementById('num2');
+      const num1 = document.getElementById('num1');
+      const brandName = document.getElementById('brand-name');
+      const contentWrapper = document.getElementById('content-wrapper');
+      const preloader = document.getElementById('preloader');
+      const overlayContent = document.getElementById('overlay-content');
+      
+      setTimeout(() => {
+        num3.classList.add('visible');
+        setTimeout(() => panelLeft.classList.add('hidden'), 1000);
+      }, 500);
+      setTimeout(() => {
+        num2.classList.add('visible');
+        setTimeout(() => panelRight.classList.add('hidden'), 1000);
+      }, 1800);
+      setTimeout(() => {
+        num1.classList.add('visible');
+        setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
+      }, 3100);
+      setTimeout(() => {
+        brandName.classList.add('visible');
+      }, 4300);
+      
+      // This is the crucial part that reveals the content
+      setTimeout(() => {
+        overlayContent.style.opacity = 0;
+        contentWrapper.classList.add('visible');
+        document.body.classList.remove('preloader-active');
+        
+        setTimeout(() => {
+          preloader.style.display = 'none';
+          overlayContent.style.display = 'none';
+        }, 1200);
+      }, 5800);
     });
   </script>
 </body>
