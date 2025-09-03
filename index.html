@@ -144,9 +144,9 @@
       text-align: center;
     }
     /* === CHANGED THIS SECTION === */
-    .product-text h4 {
+    .product-text h6 {
       font-family: 'Cinzel', serif;
-      font-size: 2.2rem; /* Reduced from 3rem */
+      font-size: 1.8rem; /* Further reduced for h6 */
       margin: 0;
       font-weight: 400;
     }
@@ -320,7 +320,7 @@
       const num2 = document.getElementById('num2');
       const num1 = document.getElementById('num1');
       const brandName = document.getElementById('brand-name');
-      const content-wrapper = document.getElementById('content-wrapper');
+      const contentWrapper = document.getElementById('content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.getElementById('overlay-content');
       
@@ -341,7 +341,7 @@
       }, 4300);
       setTimeout(() => {
         overlayContent.style.opacity = 0;
-        content-wrapper.classList.add('visible');
+        contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
         let playPromise = audio.play();
         if (playPromise !== undefined) {
@@ -366,4 +366,3 @@
   </script>
 </body>
 </html>
-
