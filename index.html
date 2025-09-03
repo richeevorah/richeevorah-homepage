@@ -13,7 +13,6 @@
       --bg-color: #EAE5DD; 
       --text-color: #B59A72;
       --dark-panel-color: #1A1A1A;
-      --dark-grey-menu: #2C2C2C; /* New dark grey color */
     }
     body { 
       margin: 0; 
@@ -32,17 +31,17 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: relative; 
-      z-index: 10;
+      position: sticky;
+      top: 0;
+      background-color: var(--bg-color);
+      z-index: 100;
+      transition: background-color 0.3s ease;
     }
     .nav-logo {
       font-family: 'GFS Didot', serif;
       font-size: 1.5rem;
-      color: var(--text-color);
       text-decoration: none;
-    }
-    .nav-links {
-      display: flex;
+      color: var(--text-color);
     }
     .nav-links a {
       font-family: 'Cinzel', serif;
@@ -50,67 +49,88 @@
       color: var(--text-color);
       text-decoration: none;
       margin-left: 2rem;
-      padding-bottom: 5px;
-      border-bottom: 2px solid transparent;
-      transition: border-bottom 0.3s ease;
-    }
-    .nav-links a:hover {
-      border-bottom: 2px solid var(--text-color);
     }
 
-    .hamburger {
-      display: none;
-      cursor: pointer;
-    }
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background-color: var(--text-color);
-      margin: 5px 0;
-      transition: 0.4s;
-    }
-
-    /* Responsive Styles for Desktop */
+    .hamburger { display: none; cursor: pointer; }
+    .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px 0; }
+    
     @media (min-width: 769px) {
-      .nav-logo {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      .main-nav {
-        justify-content: flex-end; /* Push links to the right */
-      }
+      .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
+      .main-nav { justify-content: flex-end; }
     }
-
-    /* Responsive Styles for Mobile */
     @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        /* CHANGED: Dark grey background */
-        background-color: var(--dark-grey-menu);
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      }
-      .nav-links.active {
-        display: flex;
-      }
-      .nav-links a {
-        margin: 1rem 0;
-        /* CHANGED: Light text for the dark menu */
-        color: var(--bg-color);
-      }
-      .hamburger {
-        display: block;
-      }
+      .nav-links { display: none; }
+      .hamburger { display: block; }
     }
     
-    section, footer { padding: 1rem 2rem; position: relative; z-index: 10; text-align: center;}
+    section { padding: 2rem; position: relative; z-index: 10; }
+    footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
+
+    .hero-section {
+      text-align: left;
+      padding: 4rem 5%;
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
+    
+    .product-showcase {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 5rem 2rem;
+      background-color: white;
+      color: #1d1d1f;
+    }
+    .product-text {
+      flex: 1;
+      min-width: 300px;
+      padding: 2rem;
+      text-align: center;
+    }
+    .product-text h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      margin: 0;
+    }
+    .product-text p {
+      font-family: 'GFS Didot', serif;
+      font-size: 1.2rem;
+      margin: 1rem 0 2rem 0;
+    }
+    .product-cta a {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      margin: 0 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .cta-buy {
+      background-color: #0071e3;
+      color: white;
+    }
+    .cta-learn {
+      background-color: transparent;
+      color: #0071e3;
+      border: 1px solid #0071e3;
+    }
+    .product-image {
+      flex: 1;
+      min-width: 300px;
+      padding: 2rem;
+    }
+    .product-image img {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
 
     /* Preloader Styles */
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
@@ -122,8 +142,7 @@
     @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
     .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
     .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
-    
-    .hero-text { font-family: 'GFS Didot', serif; font-size: 3.5rem; font-weight: 400; color: var(--text-color); margin-bottom: 1rem; }
+
   </style>
 </head>
 <body class="preloader-active">
@@ -138,6 +157,10 @@
 
   <div class="content-wrapper">
     <canvas id="canvas"></canvas>
+
+    <audio id="background-audio" loop>
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
     
     <nav class="main-nav">
       <a href="#" class="nav-logo">Riché Evorah</a>
@@ -146,17 +169,27 @@
         <a href="#">About</a>
         <a href="#">Contact</a>
       </div>
-      <div class="hamburger" id="hamburger">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+      <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
     </nav>
 
-    <section id="home">
-      <div style="text-align: left; padding: 4rem 0 4rem 5%;">
+    <section id="home" class="hero-section">
+      <div>
         <h1 class="hero-text">Riché Evorah</h1>
         <p>championship collection out now!</p>
+      </div>
+    </section>
+
+    <section class="product-showcase">
+      <div class="product-text">
+        <h2>The Boston Varsity Tee</h2>
+        <p>A timeless design, reimagined with unparalleled craftsmanship.</p>
+        <div class="product-cta">
+          <a href="#" class="cta-buy">Shop Now</a>
+          <a href="#" class="cta-learn">Learn More</a>
+        </div>
+      </div>
+      <div class="product-image">
+        <img src="your-product-image.png" alt="Boston Varsity T-Shirt">
       </div>
     </section>
     
@@ -188,12 +221,8 @@
         window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
       } catch (error) { console.error('Error with 3D scene:', error); }
 
-      // Hamburger Menu Script
-      const hamburger = document.getElementById('hamburger');
-      const navLinks = document.getElementById('nav-links');
-      hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-      });
+      // Get audio element
+      const audio = document.getElementById('background-audio');
 
       // Preloader Script
       const panelLeft = document.getElementById('panel-1');
@@ -226,6 +255,14 @@
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
+        
+        // Try to play music
+        let playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            document.body.addEventListener('click', () => audio.play(), { once: true });
+          });
+        }
         
         setTimeout(() => {
           preloader.style.display = 'none';
