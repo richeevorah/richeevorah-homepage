@@ -137,8 +137,24 @@
       background-color: transparent;
       color: var(--text-color);
     }
-    .product-text h2 { font-family: 'Cinzel', serif; font-size: 3rem; margin: 0; }
-    .product-text p { font-family: 'GFS Didot', serif; font-size: 1.2rem; margin: 1rem 0 2rem 0; }
+    .product-text {
+      flex: 1;
+      min-width: 300px;
+      padding: 2rem;
+      text-align: center;
+    }
+    /* === CHANGED THIS SECTION === */
+    .product-text h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem; /* Reduced from 3rem */
+      margin: 0;
+      font-weight: 400;
+    }
+    .product-text p {
+      font-family: 'GFS Didot', serif;
+      font-size: 1.2rem;
+      margin: 1rem 0 2rem 0;
+    }
     .product-cta a {
       font-family: 'Cinzel', serif;
       display: inline-block;
@@ -162,7 +178,7 @@
     .product-text, .product-image { flex: 1; min-width: 300px; padding: 2rem; }
 
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
-    .panel { flex: 1; height: 100%; background-color: var(--panel-color); transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
+    .panel { flex: 1; height: 100%; background-color: #1A1A1A; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
     .panel.hidden { transform: translateY(-100%); }
     .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
     .countdown-number { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 25vw; color: var(--text-color); opacity: 0; }
@@ -225,7 +241,7 @@
     </section>
     <section class="product-showcase">
       <div class="product-text">
-        <h2>The Boston Varsity Tee</h2>
+        <h4>The Boston Varsity Tee</h4>
         <p>A timeless design, reimagined with unparalleled craftsmanship.</p>
         <div class="product-cta">
           <a href="#" class="cta-buy">Shop Now</a>
@@ -304,7 +320,7 @@
       const num2 = document.getElementById('num2');
       const num1 = document.getElementById('num1');
       const brandName = document.getElementById('brand-name');
-      const contentWrapper = document.getElementById('content-wrapper');
+      const content-wrapper = document.getElementById('content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.getElementById('overlay-content');
       
@@ -325,7 +341,7 @@
       }, 4300);
       setTimeout(() => {
         overlayContent.style.opacity = 0;
-        contentWrapper.classList.add('visible');
+        content-wrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
         let playPromise = audio.play();
         if (playPromise !== undefined) {
