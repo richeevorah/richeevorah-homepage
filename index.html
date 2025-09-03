@@ -13,6 +13,7 @@
       --bg-color: #EAE5DD; 
       --text-color: #B59A72;
       --dark-panel-color: #1A1A1A;
+      /* Removed --dark-grey-menu as we're not using it for the overlay */
     }
     body { 
       margin: 0; 
@@ -43,24 +44,86 @@
       text-decoration: none;
       color: var(--text-color);
     }
+    /* These .nav-links are for DESKTOP */
+    .nav-links {
+      display: flex;
+    }
     .nav-links a {
       font-family: 'Cinzel', serif;
       font-size: 1rem;
       color: var(--text-color);
       text-decoration: none;
       margin-left: 2rem;
+      padding-bottom: 5px;
+      border-bottom: 2px solid transparent;
+      transition: border-bottom 0.3s ease;
+    }
+    .nav-links a:hover {
+      border-bottom: 2px solid var(--text-color);
     }
 
-    .hamburger { display: none; cursor: pointer; }
-    .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px 0; }
-    
-    @media (min-width: 769px) {
-      .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
-      .main-nav { justify-content: flex-end; }
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      z-index: 10001; /* Make sure it's on top of everything */
     }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-color);
+      margin: 5px 0;
+      transition: 0.4s;
+    }
+
+    /* Desktop Styles (for nav-logo and main-nav justification) */
+    @media (min-width: 769px) {
+      .nav-logo { 
+        position: absolute; 
+        left: 50%; 
+        transform: translateX(-50%); 
+      }
+      .main-nav { 
+        justify-content: flex-end; /* Pushes desktop links to the right */
+      }
+    }
+
+    /* Mobile Menu Styles (Fullscreen Overlay - using site colors) */
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hamburger { display: block; }
+      .nav-links {
+        /* This creates the fullscreen overlay */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--bg-color); /* Your site's background color */
+        
+        /* Centering the links */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        /* Hiding and showing with a fade effect */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s, visibility 0.5s;
+        
+        /* Ensure links are on top */
+        z-index: 10000;
+      }
+      .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .nav-links a {
+        margin: 2rem 0; /* More spacing between links */
+        font-size: 1.5rem; /* Larger font size */
+        color: var(--text-color); /* Your site's text color */
+      }
+      .hamburger {
+        display: block;
+      }
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
@@ -82,7 +145,7 @@
       justify-content: center;
       flex-wrap: wrap;
       padding: 5rem 2rem;
-      background-color: white;
+      background-color: white; /* This section still uses white for contrast like Apple */
       color: #1d1d1f;
     }
     .product-text {
@@ -164,13 +227,14 @@
     
     <nav class="main-nav">
       <a href="#" class="nav-logo">Riché Evorah</a>
-      <div class="nav-links" id="nav-links">
-        <a href="#">Collections</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-      </div>
       <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
     </nav>
+    
+    <div class="nav-links" id="nav-links-mobile"> 
+      <a href="#">Collections</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
 
     <section id="home" class="hero-section">
       <div>
@@ -223,6 +287,15 @@
 
       // Get audio element
       const audio = document.getElementById('background-audio');
+
+      // Hamburger Menu Script - Note: using #nav-links-mobile for the fullscreen div
+      const hamburger = document.getElementById('hamburger');
+      const navLinksMobile = document.getElementById('nav-links-mobile'); // Changed ID
+      hamburger.addEventListener('click', () => {
+        navLinksMobile.classList.toggle('active');
+        // Optional: Toggle the hamburger icon to an "X" when open
+        hamburger.classList.toggle('open'); 
+      });
 
       // Preloader Script
       const panelLeft = document.getElementById('panel-1');
