@@ -42,10 +42,11 @@
       text-decoration: none;
       color: var(--text-color);
     }
-    .nav-links {
+    .nav-links-desktop {
       display: flex;
+      align-items: center;
     }
-    .nav-links a {
+    .nav-links-desktop a {
       font-family: 'Cinzel', serif;
       font-size: 1rem;
       color: var(--text-color);
@@ -53,35 +54,54 @@
       margin-left: 2rem;
     }
 
-    .hamburger {
-      display: none;
-      cursor: pointer;
-      z-index: 10001;
-    }
-    .hamburger div {
-      width: 25px;
-      height: 3px;
-      background-color: var(--text-color);
-      margin: 5px 0;
-      transition: 0.4s;
-    }
+    .hamburger { display: none; cursor: pointer; z-index: 10001; }
+    .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px 0; }
     
-    .close-btn {
-      position: absolute;
-      top: 1.5rem;
-      right: 2rem;
-      font-size: 2.5rem;
-      font-family: 'Cinzel', serif;
-      color: var(--text-color);
+    .close-btn { position: absolute; top: 1.5rem; right: 2rem; font-size: 2.5rem; color: var(--text-color); cursor: pointer; }
+
+    .music-toggle {
+      width: 24px;
+      height: 24px;
       cursor: pointer;
+      position: relative;
+      margin-left: 2rem;
+    }
+    .music-waves, .music-slash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      fill: var(--text-color);
+    }
+    .music-waves path {
+      animation: wave 1.5s linear infinite;
+      transform-origin: bottom;
+    }
+    .music-waves path:nth-child(2) { animation-delay: -0.3s; }
+    .music-waves path:nth-child(3) { animation-delay: -0.6s; }
+    .music-waves path:nth-child(4) { animation-delay: -0.9s; }
+    
+    .music-slash { opacity: 0; transition: opacity 0.3s ease; }
+    
+    .music-toggle.muted .music-waves path { animation-play-state: paused; }
+    .music-toggle.muted .music-slash { opacity: 1; }
+
+    @keyframes wave {
+      0% { transform: scaleY(0.3); }
+      33% { transform: scaleY(1.0); }
+      66% { transform: scaleY(0.5); }
+      100% { transform: scaleY(0.3); }
     }
 
     @media (min-width: 769px) {
       .nav-logo { position: absolute; left: 50%; transform: translateX(-50%); }
       .main-nav { justify-content: flex-end; }
+      .nav-links-mobile { display: none; }
     }
     @media (max-width: 768px) {
-      .nav-links {
+      .nav-links-desktop { display: none; }
+      .nav-links-mobile {
         position: fixed;
         top: 0;
         left: 0;
@@ -97,18 +117,9 @@
         transition: opacity 0.5s, visibility 0.5s;
         z-index: 10000;
       }
-      .nav-links.active {
-        opacity: 1;
-        visibility: visible;
-      }
-      .nav-links a {
-        margin: 2rem 0;
-        font-size: 1.5rem;
-        color: var(--text-color);
-      }
-      .hamburger {
-        display: block;
-      }
+      .nav-links-mobile.active { opacity: 1; visibility: visible; }
+      .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
+      .hamburger { display: block; }
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
@@ -133,22 +144,8 @@
       background-color: transparent;
       color: var(--text-color);
     }
-    .product-text {
-      flex: 1;
-      min-width: 300px;
-      padding: 2rem;
-      text-align: center;
-    }
-    .product-text h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 3rem;
-      margin: 0;
-    }
-    .product-text p {
-      font-family: 'GFS Didot', serif;
-      font-size: 1.2rem;
-      margin: 1rem 0 2rem 0;
-    }
+    .product-text h2 { font-family: 'Cinzel', serif; font-size: 3rem; margin: 0; }
+    .product-text p { font-family: 'GFS Didot', serif; font-size: 1.2rem; margin: 1rem 0 2rem 0; }
     .product-cta a {
       font-family: 'Cinzel', serif;
       display: inline-block;
@@ -168,18 +165,8 @@
       color: var(--text-color);
       border: 1px solid var(--text-color);
     }
-    .product-image {
-      flex: 1;
-      min-width: 300px;
-      padding: 2rem;
-    }
-    .product-image img {
-      width: 100%;
-      max-width: 500px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
+    .product-image img { width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto; }
+    .product-text, .product-image { flex: 1; min-width: 300px; padding: 2rem; }
 
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
     .panel { flex: 1; height: 100%; background-color: #1A1A1A; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
@@ -190,7 +177,6 @@
     @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
     .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
     .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
-
   </style>
 </head>
 <body class="preloader-active">
@@ -205,13 +191,25 @@
 
   <div class="content-wrapper" id="content-wrapper">
     <canvas id="canvas"></canvas>
+    <audio id="background-audio" loop>
+      <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
     
     <nav class="main-nav">
       <a href="#" class="nav-logo">Riché Evorah</a>
+      <div class="nav-links-desktop">
+        <a href="#">Collections</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <div class="music-toggle" id="music-toggle">
+          <svg class="music-waves" viewBox="0 0 24 24"><path d="M3 10h3v4H3z M8 6h3v12H8z M13 2h3v20h-3z M18 6h3v12h-3z"></path></svg>
+          <svg class="music-slash" viewBox="0 0 24 24"><path d="M4.75 3.25a.75.75 0 00-1.5 0v17.5a.75.75 0 001.5 0V3.25z" transform="rotate(45 12 12)"></path></svg>
+        </div>
+      </div>
       <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
     </nav>
     
-    <div class="nav-links" id="nav-links">
+    <div class="nav-links-mobile" id="nav-links-mobile">
       <div class="close-btn" id="close-btn">&times;</div>
       <a href="#">Collections</a>
       <a href="#">About</a>
@@ -224,7 +222,6 @@
         <p>championship collection out now!</p>
       </div>
     </section>
-
     <section class="product-showcase">
       <div class="product-text">
         <h2>The Boston Varsity Tee</h2>
@@ -238,58 +235,68 @@
         <img src="your-product-image.png" alt="Boston Varsity T-Shirt">
       </div>
     </section>
-    
     <footer><p>© 2025 Riché Evorah</p></footer>
   </div>
 
   <script>
     window.addEventListener('load', () => {
       // 3D Pearl Field Script
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
-      renderer.setClearColor(0x000000, 0);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.position.z = 50;
-      const particlesGeometry = new THREE.BufferGeometry();
-      const particlesCount = 500;
-      const posArray = new Float32Array(particlesCount * 3);
-      for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
-      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-      const textureLoader = new THREE.TextureLoader();
-      const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
-      const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xB59A72, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
-      const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-      scene.add(particlesMesh);
+      try {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
+        renderer.setClearColor(0x000000, 0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 50;
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const textureLoader = new THREE.TextureLoader();
+        const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
+        const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xB59A72, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
 
-      let scrollY = window.scrollY;
-      let scrollSpeed = 0;
+        let scrollY = window.scrollY;
+        let scrollSpeed = 0;
 
-      window.addEventListener('scroll', () => {
-        const newScrollY = window.scrollY;
-        scrollSpeed = (newScrollY - scrollY) * 0.0001;
-        scrollY = newScrollY;
-      });
+        window.addEventListener('scroll', () => {
+          const newScrollY = window.scrollY;
+          scrollSpeed = (newScrollY - scrollY) * 0.0001;
+          scrollY = newScrollY;
+        });
 
-      function animate3D() {
-        requestAnimationFrame(animate3D);
-        particlesMesh.rotation.y += scrollSpeed;
-        scrollSpeed *= 0.95; 
-        particlesMesh.rotation.y += 0.0002;
-        renderer.render(scene, camera);
-      }
-      animate3D();
+        function animate3D() {
+          requestAnimationFrame(animate3D);
+          particlesMesh.rotation.y += scrollSpeed;
+          scrollSpeed *= 0.95; 
+          particlesMesh.rotation.y += 0.0002;
+          renderer.render(scene, camera);
+        }
+        animate3D();
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+      } catch (error) { console.error('Error with 3D scene:', error); }
 
-      window.addEventListener('resize', () => { /* ... resize logic ... */ });
-
-      // Hamburger Menu Script
+      const audio = document.getElementById('background-audio');
       const hamburger = document.getElementById('hamburger');
-      const navLinks = document.getElementById('nav-links');
+      const navLinksMobile = document.getElementById('nav-links-mobile');
       const closeBtn = document.getElementById('close-btn');
-      hamburger.addEventListener('click', () => { navLinks.classList.add('active'); });
-      closeBtn.addEventListener('click', () => { navLinks.classList.remove('active'); });
+      hamburger.addEventListener('click', () => { navLinksMobile.classList.add('active'); });
+      closeBtn.addEventListener('click', () => { navLinksMobile.classList.remove('active'); });
 
-      // Preloader Script
+      const musicToggle = document.getElementById('music-toggle');
+      musicToggle.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          musicToggle.classList.remove('muted');
+        } else {
+          audio.pause();
+          musicToggle.classList.add('muted');
+        }
+      });
+      
       const panelLeft = document.getElementById('panel-1');
       const panelMiddle = document.getElementById('panel-2');
       const panelRight = document.getElementById('panel-3');
@@ -320,7 +327,20 @@
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
-        
+        let playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            musicToggle.classList.remove('muted');
+          }).catch(error => {
+            musicToggle.classList.add('muted');
+            document.body.addEventListener('click', () => {
+              if (audio.paused) {
+                audio.play();
+                musicToggle.classList.remove('muted');
+              }
+            }, { once: true });
+          });
+        }
         setTimeout(() => {
           preloader.style.display = 'none';
           overlayContent.style.display = 'none';
