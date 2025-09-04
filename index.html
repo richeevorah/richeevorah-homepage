@@ -119,31 +119,14 @@
     footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
 
     .hero-section {
-      text-align: left;
-      /* === THIS IS THE CHANGED LINE === */
-      padding: 1rem 5% 4rem 5%; /* Reduced top padding from 4rem to 1rem */
-      min-height: 50vh;
+      text-align: center; /* Centered */
+      padding: 4rem 5%;
+      min-height: 80vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    .hero-text { font-size: 2.8rem; font-weight: 400; margin-bottom: 1rem; }
-    
-    .hero-visual {
-      flex: 1;
-      min-width: 300px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-    }
-    .hero-image {
-      width: 100%;
-      max-width: 450px;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
+    .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
     
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
     .panel { flex: 1; height: 100%; background-color: #1A1A1A; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
@@ -207,12 +190,9 @@
           <h1 class="hero-text">Riché Evorah</h1>
           <p>Timeless Luxury, Unrivaled Elegance.</p>
         </div>
-        <div class="hero-visual">
-          <img src="hero-image.png" alt="hero image" class="hero-image">
-        </div>
       </section>
       
-      </main>
+    </main>
 
     <footer>
       <p>© 2025 Riché Evorah</p>
@@ -281,52 +261,4 @@
       const panelMiddle = document.getElementById('panel-2');
       const panelRight = document.getElementById('panel-3');
       const num3 = document.getElementById('num3');
-      const num2 = document.getElementById('num2');
-      const num1 = document.getElementById('num1');
-      const brandName = document.getElementById('brand-name');
-      const contentWrapper = document.getElementById('content-wrapper');
-      const preloader = document.getElementById('preloader');
-      const overlayContent = document.getElementById('overlay-content');
-      
-      setTimeout(() => {
-        num3.classList.add('visible');
-        setTimeout(() => panelLeft.classList.add('hidden'), 1000);
-      }, 500);
-      setTimeout(() => {
-        num2.classList.add('visible');
-        setTimeout(() => panelRight.classList.add('hidden'), 1000);
-      }, 1800);
-      setTimeout(() => {
-        num1.classList.add('visible');
-        setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
-      }, 3100);
-      setTimeout(() => {
-        brandName.classList.add('visible');
-      }, 4300);
-      setTimeout(() => {
-        overlayContent.style.opacity = 0;
-        contentWrapper.classList.add('visible');
-        document.body.classList.remove('preloader-active');
-        let playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            musicToggle.classList.remove('muted');
-          }).catch(error => {
-            musicToggle.classList.add('muted');
-            document.body.addEventListener('click', () => {
-              if (audio.paused) {
-                audio.play();
-                musicToggle.classList.remove('muted');
-              }
-            }, { once: true });
-          });
-        }
-        setTimeout(() => {
-          preloader.style.display = 'none';
-          overlayContent.style.display = 'none';
-        }, 1200);
-      }, 5800);
-    });
-  </script>
-</body>
-</html>
+      const
