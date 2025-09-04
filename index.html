@@ -114,7 +114,6 @@
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
       
-      /* Mobile-specific font sizes */
       .announcement-text { font-size: 0.5rem !important; }
       .hero-text { font-size: 1.75rem !important; }
     }
@@ -124,28 +123,29 @@
 
     .hero-section {
       text-align: center;
-      padding: 1px 5% 4rem 5%; /* Adjusted padding */
+      /* === THIS IS THE CHANGED LINE === */
+      padding: 0 5% 4rem 5%; 
       min-height: 80vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
     .hero-text { 
-      font-size: 1.75rem; /* Reduced by half */
+      font-size: 1.75rem;
       font-weight: 400; 
       margin-bottom: 1rem; 
-      margin-top: 10px; /* New spacing */
+      margin-top: 10px;
     }
     
     .announcement-banner {
         text-align: center;
         font-family: 'Cinzel', serif;
         color: var(--text-color);
-        margin-bottom: 0; /* Removed margin to bring it closer */
+        margin-bottom: 0;
         width: 100%;
     }
     .announcement-text {
-        font-size: 0.5rem; /* Reduced by half */
+        font-size: 0.5rem;
         letter-spacing: 0.1em;
         text-transform: uppercase;
     }
