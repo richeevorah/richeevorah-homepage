@@ -113,6 +113,10 @@
       .nav-links-mobile.active { opacity: 1; visibility: visible; }
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
+      
+      /* Mobile-specific font sizes */
+      .announcement-text { font-size: 0.8rem !important; }
+      .hero-text { font-size: 2.5rem !important; }
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
@@ -121,7 +125,7 @@
     .hero-section {
       text-align: center;
       /* MOVED HIGHER */
-      padding: 2rem 5% 4rem 5%; 
+      padding: 2rem 5%; 
       min-height: 80vh;
       display: flex;
       flex-direction: column;
@@ -133,7 +137,8 @@
         text-align: center;
         font-family: 'Cinzel', serif;
         color: var(--text-color);
-        margin-bottom: 3rem; /* Increased space between banner and main title */
+        /* MOVED HIGHER (less margin) */
+        margin-bottom: 1rem; 
         width: 100%;
     }
     .announcement-text {
@@ -141,7 +146,6 @@
         letter-spacing: 0.1em;
         text-transform: uppercase;
     }
-    /* NEW: Style for the link */
     .checkout-link {
         font-weight: bold;
         text-decoration: underline;
@@ -206,16 +210,13 @@
 
     <main>
       <section id="home" class="hero-section">
-        
         <div class="announcement-banner">
             <p class="announcement-text">championship collection is live now! <a href="#" class="checkout-link">check out</a></p>
         </div>
-        
         <div class="hero-text-content">
           <h1 class="hero-text">Riché Evorah</h1>
           <p>Timeless Luxury, Unrivaled Elegance.</p>
         </div>
-
       </section>
     </main>
 
