@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Riché Evorah</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -113,25 +114,25 @@
       .nav-links-mobile.active { opacity: 1; visibility: visible; }
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
-      
-      /* === NEW: MOBILE-SPECIFIC FONT SIZE === */
-      .hero-text {
-        font-size: 3rem !important; /* Smaller font on mobile */
-      }
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
     footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
 
     .hero-section {
-      text-align: left;
-      padding: 4rem 5%;
-      min-height: 50vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 2rem 5%;
+      min-height: 80vh;
     }
-    .hero-text { font-size: 6rem; font-weight: 400; margin-bottom: 1rem; line-height: 1.1; }
+    .hero-text-content {
+      flex: 1;
+      min-width: 300px;
+      text-align: left;
+    }
+    .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
     
     .hero-visual {
       flex: 1;
@@ -208,7 +209,7 @@
     <main>
       <section id="home" class="hero-section">
         <div class="hero-text-content">
-          <h1 class="hero-text">Riché Evorah</h1>
+          <h1 class="hero-text" id="hero-text"></h1>
           <p>Timeless Luxury, Unrivaled Elegance.</p>
         </div>
         <div class="hero-visual">
@@ -216,7 +217,7 @@
         </div>
       </section>
       
-      </main>
+    </main>
 
     <footer>
       <p>© 2025 Riché Evorah</p>
@@ -311,6 +312,14 @@
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
+        
+        // Start the "Ghostwriter" animation after the page is visible
+        new Typed('#hero-text', {
+          strings: ['Riché Evorah'],
+          typeSpeed: 100, // Speed of typing
+          showCursor: false, // Hides the blinking cursor
+        });
+
         let playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
