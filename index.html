@@ -7,11 +7,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: #EAE5DD; 
       --text-color: #B59A72;
+      --panel-color: #1A1A1A;
     }
     body { 
       margin: 0; 
@@ -20,52 +21,11 @@
       color: var(--text-color);
     }
     body.preloader-active { overflow: hidden; }
-    .content-wrapper { opacity: 0; transition: opacity 1s ease-in; }
+    .content-wrapper { opacity: 0; transition: opacity 0.8s ease-in; }
     .content-wrapper.visible { opacity: 1; }
     
-    #canvas { 
-      width: 100vw; 
-      height: 100vh; 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      z-index: 0; 
-    }
-    section, footer { 
-      padding: 2rem; 
-      position: relative; 
-      z-index: 10; 
-    }
-
-    /* === PRELOADER === */
-    #preloader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
-      background-color: var(--bg-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 1.5s ease-in-out;
-    }
-    #preloader.fade-out {
-      opacity: 0;
-    }
-    .brand-name-reveal {
-      font-family: 'GFS Didot', serif;
-      font-size: 5vw;
-      color: var(--text-color);
-      animation: fadeIn 2.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-    }
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
+    #canvas { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 0; }
     
-    /* === NAVIGATION === */
     .main-nav {
       padding: 1.5rem 2rem;
       display: flex;
@@ -155,51 +115,84 @@
       .hamburger { display: block; }
     }
     
-    /* === "FALLING TEE" HERO SECTION === */
+    section { padding: 2rem; position: relative; z-index: 10; }
+    footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
+
     .hero-section {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 2rem 5%;
-      min-height: 80vh;
-    }
-    .hero-text-content {
-      flex-basis: 45%;
       text-align: left;
+      padding: 4rem 5%;
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
     
-    .hero-visual {
-      flex-basis: 45%;
+    .product-showcase {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 5rem 2rem;
+      background-color: transparent;
+      color: var(--text-color);
     }
-    .falling-tee {
-      width: 100%;
-      max-width: 400px;
-      opacity: 0; /* Start hidden */
-      /* This is the realistic animation */
-      animation: fallIn 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s forwards;
+    .product-text h6 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: 400;
     }
-    
-    @keyframes fallIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-120%) rotateZ(-15deg);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) rotateZ(0deg);
-      }
+    .product-text p {
+      font-family: 'GFS Didot', serif;
+      font-size: 1.2rem;
+      margin: 1rem 0 2rem 0;
     }
+    .product-cta a {
+      font-family: 'Cinzel', serif;
+      display: inline-block;
+      margin: 0 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .cta-buy {
+      background-color: var(--text-color);
+      color: var(--bg-color);
+      border: 1px solid var(--text-color);
+    }
+    .cta-learn {
+      background-color: transparent;
+      color: var(--text-color);
+      border: 1px solid var(--text-color);
+    }
+    .product-image img { width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto; }
+    .product-text, .product-image { flex: 1; min-width: 300px; padding: 2rem; }
 
+    #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
+    .panel { flex: 1; height: 100%; background-color: #1A1A1A; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
+    .panel.hidden { transform: translateY(-100%); }
+    .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .countdown-number { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 25vw; color: var(--text-color); opacity: 0; }
+    .countdown-number.visible { animation: flash 1s ease-in-out forwards; }
+    @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
+    .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
   </style>
 </head>
 <body class="preloader-active">
 
   <div id="preloader">
-    <div class="brand-name-reveal">RICHÉ EVORAH</div>
+    <div class="panel" id="panel-1"></div>
+    <div class="panel" id="panel-2"></div>
+    <div class="panel" id="panel-3"></div>
+  </div>
+  <div class="overlay-content" id="overlay-content">
+    <div class="countdown-number" id="num3">3</div>
+    <div class="countdown-number" id="num2">2</div>
+    <div class="countdown-number" id="num1">1</div>
+    <div class="brand-name-reveal" id="brand-name">RICHÉ EVORAH</div>
   </div>
 
   <div class="content-wrapper" id="content-wrapper">
@@ -208,7 +201,7 @@
       <source src="background-music.mp3" type="audio/mpeg">
     </audio>
     
-    <header class="main-nav">
+    <nav class="main-nav">
       <div class="nav-left-cluster">
         <div class="hamburger" id="hamburger"><div></div><div></div><div></div></div>
       </div>
@@ -224,7 +217,7 @@
           <svg class="music-slash" viewBox="0 0 24 24"><path d="M4.75 3.25a.75.75 0 00-1.5 0v17.5a.75.75 0 001.5 0V3.25z" transform="rotate(45 12 12)"></path></svg>
         </div>
       </div>
-    </header>
+    </nav>
     
     <div class="nav-links-mobile" id="nav-links-mobile">
       <div class="close-btn" id="close-btn">&times;</div>
@@ -233,22 +226,26 @@
       <a href="#">Contact</a>
     </div>
 
-    <main>
-      <section id="home" class="hero-section">
-        <div class="hero-text-content">
-          <h1 class="hero-text">Riché Evorah</h1>
-          <p>Timeless Luxury, Unrivaled Elegance.</p>
+    <section id="home" class="hero-section">
+      <div>
+        <h1 class="hero-text">Riché Evorah</h1>
+        <p>championship collection out now!</p>
+      </div>
+    </section>
+    <section class="product-showcase">
+      <div class="product-text">
+        <h6>The Boston Varsity Tee</h6>
+        <p>A timeless design, reimagined with unparalleled craftsmanship.</p>
+        <div class="product-cta">
+          <a href="#" class="cta-buy">Shop Now</a>
+          <a href="#" class="cta-learn">Learn More</a>
         </div>
-        <div class="hero-visual">
-          <img src="hanger-tee.png" alt="Riché Evorah T-Shirt" class="falling-tee">
-        </div>
-      </section>
-      
-      </main>
-
-    <footer>
-      <p>© 2025 Riché Evorah</p>
-    </footer>
+      </div>
+      <div class="product-image">
+        <img src="your-product-image.png" alt="Boston Varsity T-Shirt">
+      </div>
+    </section>
+    <footer><p>© 2025 Riché Evorah</p></footer>
   </div>
 
   <script>
@@ -309,11 +306,35 @@
         }
       });
       
-      const preloader = document.getElementById('preloader');
+      const panelLeft = document.getElementById('panel-1');
+      const panelMiddle = document.getElementById('panel-2');
+      const panelRight = document.getElementById('panel-3');
+      const num3 = document.getElementById('num3');
+      const num2 = document.getElementById('num2');
+      const num1 = document.getElementById('num1');
+      const brandName = document.getElementById('brand-name');
+      // === THIS IS THE CORRECTED VARIABLE NAME ===
       const contentWrapper = document.getElementById('content-wrapper');
+      const preloader = document.getElementById('preloader');
+      const overlayContent = document.getElementById('overlay-content');
       
       setTimeout(() => {
-        preloader.classList.add('fade-out');
+        num3.classList.add('visible');
+        setTimeout(() => panelLeft.classList.add('hidden'), 1000);
+      }, 500);
+      setTimeout(() => {
+        num2.classList.add('visible');
+        setTimeout(() => panelRight.classList.add('hidden'), 1000);
+      }, 1800);
+      setTimeout(() => {
+        num1.classList.add('visible');
+        setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
+      }, 3100);
+      setTimeout(() => {
+        brandName.classList.add('visible');
+      }, 4300);
+      setTimeout(() => {
+        overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
         let playPromise = audio.play();
@@ -332,8 +353,9 @@
         }
         setTimeout(() => {
           preloader.style.display = 'none';
-        }, 1500);
-      }, 3000);
+          overlayContent.style.display = 'none';
+        }, 1200);
+      }, 5800);
     });
   </script>
 </body>
