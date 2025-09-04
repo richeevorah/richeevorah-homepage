@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Riché Evorah</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -26,26 +25,6 @@
     .content-wrapper.visible { opacity: 1; }
     
     #canvas { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 0; }
-    
-    /* === CURSOR STYLES (FOR DESKTOP ONLY) === */
-    @media (min-width: 1025px) {
-      body {
-        cursor: none; /* Hide default cursor on desktops */
-      }
-      .cursor {
-        position: fixed;
-        width: 20px;
-        height: 20px;
-        background-color: white;
-        border-radius: 50%;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        z-index: 11000;
-        mix-blend-mode: difference;
-        transition: transform 0.2s ease-out;
-      }
-    }
     
     .main-nav {
       padding: 1.5rem 2rem;
@@ -134,46 +113,36 @@
       .nav-links-mobile.active { opacity: 1; visibility: visible; }
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
-      
-      .hero-text { font-size: 3rem !important; }
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
     footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
 
     .hero-section {
-      text-align: center; /* Centered now that there's no image */
-      padding: 4rem 5%;
-      min-height: 70vh; /* Adjusted height */
+      text-align: left;
+      /* === THIS IS THE CHANGED LINE === */
+      padding: 1rem 5% 4rem 5%; /* Reduced top padding from 4rem to 1rem */
+      min-height: 50vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    .hero-text { 
-      font-size: 6rem; 
-      font-weight: 400; 
-      margin-bottom: 1rem; 
-      line-height: 1.1; 
-    }
-    .hero-text .letter {
-      display: inline-block;
-      opacity: 0;
-      animation: float 5s ease-in-out infinite;
-    }
-    .hero-text .letter:nth-child(2) { animation-delay: 0.2s; }
-    .hero-text .letter:nth-child(3) { animation-delay: 0.4s; }
-    .hero-text .letter:nth-child(4) { animation-delay: 0.6s; }
-    .hero-text .letter:nth-child(5) { animation-delay: 0.8s; }
-    .hero-text .letter:nth-child(6) { animation-delay: 1.0s; }
-    .hero-text .letter:nth-child(7) { animation-delay: 1.2s; }
-    .hero-text .letter:nth-child(8) { animation-delay: 1.4s; }
-    .hero-text .letter:nth-child(9) { animation-delay: 1.6s; }
-    .hero-text .letter:nth-child(10) { animation-delay: 1.8s; }
-    .hero-text .letter:nth-child(11) { animation-delay: 2.0s; }
+    .hero-text { font-size: 2.8rem; font-weight: 400; margin-bottom: 1rem; }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .hero-visual {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    .hero-image {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
     
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
@@ -188,7 +157,6 @@
   </style>
 </head>
 <body class="preloader-active">
-  <div class="cursor" id="cursor"></div>
 
   <div id="preloader">
     <div class="panel" id="panel-1"></div>
@@ -236,11 +204,15 @@
     <main>
       <section id="home" class="hero-section">
         <div class="hero-text-content">
-          <h1 class="hero-text" id="hero-text">Riché Evorah</h1>
+          <h1 class="hero-text">Riché Evorah</h1>
           <p>Timeless Luxury, Unrivaled Elegance.</p>
         </div>
+        <div class="hero-visual">
+          <img src="hero-image.png" alt="hero image" class="hero-image">
+        </div>
       </section>
-    </main>
+      
+      </main>
 
     <footer>
       <p>© 2025 Riché Evorah</p>
@@ -354,38 +326,6 @@
           overlayContent.style.display = 'none';
         }, 1200);
       }, 5800);
-      
-      // Elegant Rotation & Cursor Logic
-      const isTouchDevice = 'ontouchstart' in window;
-      if (!isTouchDevice) {
-        const heroText = document.getElementById('hero-text');
-        const text = heroText.textContent.trim();
-        heroText.innerHTML = '';
-        for (let i = 0; i < text.length; i++) {
-          const letter = document.createElement('span');
-          letter.className = 'letter';
-          letter.textContent = text[i] === ' ' ? '\u00A0' : text[i];
-          heroText.appendChild(letter);
-        }
-
-        setTimeout(() => {
-          gsap.to(".letter", { duration: 1, opacity: 1, rotationY: 360, stagger: 0.05, ease: "power2.out" });
-        }, 5900);
-
-        const cursor = document.getElementById('cursor');
-        const interactiveElements = document.querySelectorAll('a, .hamburger, .close-btn, .music-toggle');
-        window.addEventListener('mousemove', (e) => {
-          gsap.to(cursor, { duration: 0.3, x: e.clientX, y: e.clientY, ease: "power2.out" });
-        });
-        interactiveElements.forEach(el => {
-          el.addEventListener('mouseenter', () => {
-            gsap.to(cursor, { duration: 0.3, scale: 2.5, ease: "power2.out" });
-          });
-          el.addEventListener('mouseleave', () => {
-            gsap.to(cursor, { duration: 0.3, scale: 1, ease: "power2.out" });
-          });
-        });
-      }
     });
   </script>
 </body>
