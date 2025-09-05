@@ -13,6 +13,7 @@
       --bg-color: #EAE5DD; 
       --text-color: #B59A72;
       --panel-color: #1A1A1A;
+      --brand-accent-color: #B59A72; /* Define brand accent color for transitions */
     }
     body { 
       margin: 0; 
@@ -114,8 +115,7 @@
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
       
-      /* Mobile-specific font sizes */
-      .announcement-text { font-size: 0.8rem !important; } /* Adjusted for mobile to match subheading */
+      .announcement-text { font-size: 0.8rem !important; } 
       .hero-text { font-size: 1.75rem !important; }
     }
     
@@ -124,17 +124,17 @@
 
     .hero-section {
       text-align: center;
-      padding: 0 5% 4rem 5%; /* Top padding set to 0 */
-      min-height: 80vh; /* Adjust min-height as needed for content placement */
+      padding: 0 5% 4rem 5%; 
+      min-height: 80vh; 
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* Align content to the top */
-      padding-top: 1rem; /* Small padding from the very top */
+      justify-content: flex-start;
+      padding-top: 1rem; 
     }
     .hero-text { 
       font-size: 1.75rem;
       font-weight: 400; 
-      margin-top: 10px; /* Spacing from announcement */
+      margin-top: 10px;
       margin-bottom: 1rem;
     }
     
@@ -142,11 +142,11 @@
         text-align: center;
         font-family: 'Cinzel', serif;
         color: var(--text-color);
-        margin-bottom: 0; /* Removed margin to bring it closer */
+        margin-bottom: 0; 
         width: 100%;
     }
     .announcement-text {
-        font-size: 1rem; /* Increased size to match subheading */
+        font-size: 1rem; 
         letter-spacing: 0.1em;
         text-transform: uppercase;
     }
@@ -165,6 +165,32 @@
     @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
     .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
     .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
+
+    /* === NEW STYLES FOR PAGE TRANSITION AND ELEMENT FADE-IN === */
+    #page-transition-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--brand-accent-color);
+      z-index: 100000; /* Higher than anything else */
+      transform: translateX(-100%); /* Start off-screen to the left */
+      transition: transform 0.6s cubic-bezier(0.86, 0, 0.07, 1); /* Smooth slide */
+      pointer-events: none; /* Allow clicks to pass through when not active */
+    }
+    #page-transition-overlay.active {
+      transform: translateX(0); /* Slide in */
+    }
+
+    /* General class for elements that should fade in after content loads */
+    .fade-in-element {
+        opacity: 0;
+        transition: opacity 1s ease-in;
+    }
+    .fade-in-element.visible {
+        opacity: 1;
+    }
   </style>
 </head>
 <body class="preloader-active">
@@ -181,7 +207,7 @@
     <div class="brand-name-reveal" id="brand-name">RICHÉ EVORAH</div>
   </div>
 
-  <div class="content-wrapper" id="content-wrapper">
+  <div id="page-transition-overlay"></div> <div class="content-wrapper" id="content-wrapper">
     <canvas id="canvas"></canvas>
     <audio id="background-audio" loop>
       <source src="background-music.mp3" type="audio/mpeg">
@@ -194,9 +220,9 @@
       <a href="#" class="nav-logo">Riché Evorah</a>
       <div class="nav-right-cluster">
         <div class="nav-links-desktop">
-          <a href="#">Collections</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
+          <a href="#" class="transition-link">Collections</a>
+          <a href="#" class="transition-link">About</a>
+          <a href="#" class="transition-link">Contact</a>
         </div>
         <div class="music-toggle" id="music-toggle">
           <svg class="music-waves" viewBox="0 0 24 24"><path d="M3 10h3v4H3z M8 6h3v12H8z M13 2h3v20h-3z M18 6h3v12h-3z"></path></svg>
@@ -207,25 +233,25 @@
     
     <div class="nav-links-mobile" id="nav-links-mobile">
       <div class="close-btn" id="close-btn">&times;</div>
-      <a href="#">Collections</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
+      <a href="#" class="transition-link">Collections</a>
+      <a href="#" class="transition-link">About</a>
+      <a href="#" class="transition-link">Contact</a>
     </div>
 
     <main>
       <section id="home" class="hero-section">
-        <div class="announcement-banner">
-            <p class="announcement-text">championship collection is live now! <a href="#" class="checkout-link">check out</a></p>
+        <div class="announcement-banner fade-in-element">
+            <p class="announcement-text">championship collection is live now! <a href="#" class="checkout-link transition-link">check out</a></p>
         </div>
         <div class="hero-text-content">
-          <h1 class="hero-text">Riché Evorah</h1>
-          <p>Timeless Luxury, Unrivaled Elegance.</p>
+          <h1 class="hero-text fade-in-element">Riché Evorah</h1>
+          <p class="fade-in-element">Timeless Luxury, Unrivaled Elegance.</p>
         </div>
       </section>
     </main>
 
     <footer>
-      <p>© 2025 Riché Evorah</p>
+      <p class="fade-in-element">© 2025 Riché Evorah</p>
     </footer>
   </div>
 
@@ -297,7 +323,17 @@
       const contentWrapper = document.getElementById('content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.getElementById('overlay-content');
-      
+      const pageTransitionOverlay = document.getElementById('page-transition-overlay'); // NEW
+
+      // Function to trigger element fade-in
+      function fadeInContent() {
+        const fadeElements = document.querySelectorAll('.fade-in-element');
+        fadeElements.forEach(element => {
+          element.classList.add('visible');
+        });
+      }
+
+      // Preloader sequence
       setTimeout(() => {
         num3.classList.add('visible');
         setTimeout(() => panelLeft.classList.add('hidden'), 1000);
@@ -317,6 +353,7 @@
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
+        fadeInContent(); // Trigger fade-in for page content after preloader
         let playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -336,6 +373,34 @@
           overlayContent.style.display = 'none';
         }, 1200);
       }, 5800);
+
+      // === NEW JAVASCRIPT FOR PAGE TRANSITIONS ===
+      document.querySelectorAll('.transition-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault(); // Stop default link behavior
+          const destination = this.href;
+
+          if (destination && destination !== window.location.href + '#') { // Prevent transition on same-page hash links
+            pageTransitionOverlay.classList.add('active'); // Start wipe animation
+            
+            setTimeout(() => {
+              window.location.href = destination; // Navigate after wipe
+            }, 600); // Match this duration to the CSS transition time
+          }
+        });
+      });
+
+      // On new page load, if coming from a transition, hide overlay and fade in content
+      window.addEventListener('pageshow', function(event) {
+        if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
+          // If loaded from back/forward cache, ensure overlay is hidden and content fades in
+          pageTransitionOverlay.classList.remove('active');
+          fadeInContent();
+        } else {
+            // For fresh loads or standard navigation, the page will start hidden and fade in
+            // This is handled by the preloader or the fade-in-element class on initial render
+        }
+      });
     });
   </script>
 </body>
