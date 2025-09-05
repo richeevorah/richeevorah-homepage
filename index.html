@@ -113,9 +113,6 @@
       .nav-links-mobile.active { opacity: 1; visibility: visible; }
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
-      
-      .announcement-text { font-size: 0.8rem !important; }
-      .hero-text { font-size: 1.75rem !important; }
     }
     
     section { padding: 2rem; position: relative; z-index: 10; }
@@ -123,35 +120,30 @@
 
     .hero-section {
       text-align: center;
-      padding: 1rem 5% 4rem 5%;
+      padding: 0 5% 4rem 5%; /* NO TOP PADDING */
       min-height: 80vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    .hero-text { 
-      font-size: 1.75rem;
-      font-weight: 400; 
-      margin-top: 10px;
-      margin-bottom: 1rem;
-    }
+    .hero-text { font-size: 3.5rem; font-weight: 400; margin-bottom: 1rem; }
     
     .announcement-banner {
-        text-align: center;
-        font-family: 'Cinzel', serif;
-        color: var(--text-color);
-        margin-bottom: 0;
-        width: 100%;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      color: var(--text-color);
+      margin-bottom: 1rem;
+      width: 100%;
     }
     .announcement-text {
-        font-size: 1rem;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
     .checkout-link {
-        font-weight: bold;
-        text-decoration: underline;
-        color: var(--text-color);
+      font-weight: bold;
+      text-decoration: underline;
+      color: var(--text-color);
     }
 
     #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
@@ -164,7 +156,7 @@
     .brand-name-reveal { position: absolute; font-family: 'GFS Didot', serif; font-size: 5vw; color: var(--text-color); opacity: 0; transform: scale(0.9); transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
     .brand-name-reveal.visible { opacity: 1; transform: scale(1); }
     
-    /* === NEW: STYLES FOR SCROLL ANIMATION === */
+    /* === STYLES FOR SCROLL ANIMATION === */
     .animated-element {
       opacity: 0;
       transition: opacity 1s ease-out;
@@ -172,7 +164,6 @@
     .animated-element.visible {
       opacity: 1;
     }
-
   </style>
 </head>
 <body class="preloader-active">
@@ -240,7 +231,42 @@
   <script>
     window.addEventListener('load', () => {
       // 3D Pearl Field Script
-      try { /* ... same as before ... */ } catch (error) { console.error('Error with 3D scene:', error); }
+      try {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
+        renderer.setClearColor(0x000000, 0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 50;
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const posArray = new Float32Array(particlesCount * 3);
+        for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const textureLoader = new THREE.TextureLoader();
+        const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
+        const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xB59A72, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        let scrollY = window.scrollY;
+        let scrollSpeed = 0;
+        window.addEventListener('scroll', () => {
+          const newScrollY = window.scrollY;
+          scrollSpeed = (newScrollY - scrollY) * 0.0001;
+          scrollY = newScrollY;
+        });
+
+        function animate3D() {
+          requestAnimationFrame(animate3D);
+          particlesMesh.rotation.y += scrollSpeed;
+          scrollSpeed *= 0.95; 
+          particlesMesh.rotation.y += 0.0002;
+          renderer.render(scene, camera);
+        }
+        animate3D();
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+      } catch (error) { console.error('Error with 3D scene:', error); }
 
       const audio = document.getElementById('background-audio');
       const hamburger = document.getElementById('hamburger');
@@ -310,7 +336,6 @@
         }, 1200);
       }, 5800);
 
-      // === NEW: SCROLL ANIMATION SCRIPT ===
       const animatedElements = document.querySelectorAll('.animated-element');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -321,7 +346,7 @@
           }
         });
       }, {
-        threshold: 0.1 // How much of the element should be visible before animating
+        threshold: 0.1
       });
 
       animatedElements.forEach(el => observer.observe(el));
