@@ -119,12 +119,12 @@
       .hero-text { font-size: 1.75rem !important; }
     }
     
-    section { padding: 2rem; position: relative; z-index: 10; }
+    section { padding: 2rem 0; position: relative; z-index: 10; }
     footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
 
     .hero-section {
       text-align: center;
-      padding: 0 0 4rem 0; /* Adjusted padding to remove side padding here */
+      padding: 0 0 4rem 0;
       min-height: 80vh; 
       display: flex;
       flex-direction: column;
@@ -132,7 +132,7 @@
       padding-top: 1rem; 
     }
     .hero-text-content {
-      padding: 0 5%; /* Maintained side padding for text content */
+      padding: 0 5%;
     }
     .hero-text { 
       font-size: 1.75rem;
@@ -179,16 +179,14 @@
       width: 100%;
       height: 100%;
       background-color: var(--brand-accent-color);
-      z-index: 100000; /* Higher than anything else */
-      transform: translateX(-100%); /* Start off-screen to the left */
-      transition: transform 0.6s cubic-bezier(0.86, 0, 0.07, 1); /* Smooth slide */
-      pointer-events: none; /* Allow clicks to pass through when not active */
+      z-index: 100000;
+      transform: translateX(-100%);
+      transition: transform 0.6s cubic-bezier(0.86, 0, 0.07, 1);
+      pointer-events: none;
     }
     #page-transition-overlay.active {
-      transform: translateX(0); /* Slide in */
+      transform: translateX(0);
     }
-
-    /* General class for elements that should fade in after content loads */
     .fade-in-element {
         opacity: 0;
         transition: opacity 1s ease-in;
@@ -197,27 +195,55 @@
         opacity: 1;
     }
     
-    /* === NEW STYLES FOR IMAGE SLIDER === */
+    /* === NEW STYLES FOR CATEGORY NAVIGATION === */
+    .category-nav-wrapper {
+        width: 100%;
+        margin: 2rem 0 3rem 0;
+    }
+    .category-nav ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 0.5rem;
+    }
+    .category-nav li a {
+        font-family: 'Cinzel', serif;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        transition: opacity 0.3s ease;
+        white-space: nowrap;
+        opacity: 0.8;
+    }
+    .category-nav li a:hover {
+        opacity: 1;
+    }
+
+    /* === STYLES FOR IMAGE SLIDER === */
     .slider-container {
       width: 100%;
       overflow-x: scroll;
       cursor: grab;
-      -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
-      scrollbar-width: none; /* For Firefox */
-      margin-top: 3rem; /* Spacing below hero text */
-      padding: 0 5%; /* Horizontal padding for start and end */
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
       box-sizing: border-box;
+      padding: 0 5%;
     }
     .slider-container::-webkit-scrollbar {
-      display: none; /* For Chrome, Safari, and Opera */
+      display: none;
     }
     .slider-container.active {
       cursor: grabbing;
     }
     .slider-track {
       display: flex;
-      gap: 1.5rem; /* Space between images */
-      width: max-content; /* Allow track to be as wide as its content */
+      gap: 1.5rem;
+      width: max-content;
     }
     .slider-item {
       flex-shrink: 0;
@@ -225,18 +251,33 @@
       height: 450px;
       border-radius: 12px;
       overflow: hidden;
-      background-color: #333; /* Placeholder bg */
+      background-color: #333;
     }
     .slider-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      pointer-events: none; /* Prevents image dragging interference */
+      pointer-events: none;
     }
+
+    /* === MEDIA QUERIES === */
     @media (max-width: 768px) {
       .slider-item {
         width: 65vw;
         height: 85vw;
+      }
+      /* Make category nav scrollable on mobile */
+      .category-nav-wrapper {
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .category-nav-wrapper::-webkit-scrollbar {
+        display: none;
+      }
+      .category-nav ul {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 0 5%;
       }
     }
   </style>
@@ -296,6 +337,19 @@
           <p class="fade-in-element">Timeless Luxury, Unrivaled Elegance.</p>
         </div>
 
+        <div class="category-nav-wrapper fade-in-element">
+            <nav class="category-nav">
+                <ul>
+                    <li><a href="#">L'Essentiel Riché</a></li>
+                    <li><a href="#">Riché Air</a></li>
+                    <li><a href="#">Championship Collection</a></li>
+                    <li><a href="#">L'Embrace Riché</a></li>
+                    <li><a href="#">La Structure Riché</a></li>
+                    <li><a href="#">La Base Riché</a></li>
+                    <li><a href="#">BE RICHÉ</a></li>
+                </ul>
+            </nav>
+        </div>
         <div class="slider-container fade-in-element" id="image-slider">
           <div class="slider-track">
             <div class="slider-item"><img src="https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 1"></div>
@@ -306,7 +360,8 @@
             <div class="slider-item"><img src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 6"></div>
           </div>
         </div>
-        </section>
+
+      </section>
     </main>
 
     <footer>
@@ -382,9 +437,8 @@
       const contentWrapper = document.getElementById('content-wrapper');
       const preloader = document.getElementById('preloader');
       const overlayContent = document.getElementById('overlay-content');
-      const pageTransitionOverlay = document.getElementById('page-transition-overlay'); // NEW
+      const pageTransitionOverlay = document.getElementById('page-transition-overlay');
 
-      // Function to trigger element fade-in
       function fadeInContent() {
         const fadeElements = document.querySelectorAll('.fade-in-element');
         fadeElements.forEach(element => {
@@ -392,7 +446,6 @@
         });
       }
 
-      // Preloader sequence
       setTimeout(() => {
         num3.classList.add('visible');
         setTimeout(() => panelLeft.classList.add('hidden'), 1000);
@@ -412,7 +465,7 @@
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
-        fadeInContent(); // Trigger fade-in for page content after preloader
+        fadeInContent();
         let playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
@@ -433,35 +486,28 @@
         }, 1200);
       }, 5800);
 
-      // === NEW JAVASCRIPT FOR PAGE TRANSITIONS ===
       document.querySelectorAll('.transition-link').forEach(link => {
         link.addEventListener('click', function(e) {
-          e.preventDefault(); // Stop default link behavior
+          e.preventDefault();
           const destination = this.href;
 
-          if (destination && destination !== window.location.href + '#') { // Prevent transition on same-page hash links
-            pageTransitionOverlay.classList.add('active'); // Start wipe animation
+          if (destination && destination !== window.location.href + '#') {
+            pageTransitionOverlay.classList.add('active');
             
             setTimeout(() => {
-              window.location.href = destination; // Navigate after wipe
-            }, 600); // Match this duration to the CSS transition time
+              window.location.href = destination;
+            }, 600);
           }
         });
       });
 
-      // On new page load, if coming from a transition, hide overlay and fade in content
       window.addEventListener('pageshow', function(event) {
         if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
-          // If loaded from back/forward cache, ensure overlay is hidden and content fades in
           pageTransitionOverlay.classList.remove('active');
           fadeInContent();
-        } else {
-            // For fresh loads or standard navigation, the page will start hidden and fade in
-            // This is handled by the preloader or the fade-in-element class on initial render
         }
       });
       
-      // === NEW JAVASCRIPT FOR SLIDER DRAG-TO-SCROLL ===
       const slider = document.getElementById('image-slider');
       if (slider) {
         let isDown = false;
@@ -486,7 +532,7 @@
           if (!isDown) return;
           e.preventDefault();
           const x = e.pageX - slider.offsetLeft;
-          const walk = (x - startX) * 2; // The multiplier makes scrolling feel faster
+          const walk = (x - startX) * 2;
           slider.scrollLeft = scrollLeft - walk;
         });
       }
