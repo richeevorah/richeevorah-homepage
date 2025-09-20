@@ -6,9 +6,8 @@
   <title>Riché Evorah</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=GFS+Didot&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
   <style>
     :root {
       --bg-color: #EAE5DD; 
@@ -125,12 +124,15 @@
 
     .hero-section {
       text-align: center;
-      padding: 0 5% 4rem 5%; 
+      padding: 0 0 4rem 0; /* Adjusted padding to remove side padding here */
       min-height: 80vh; 
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       padding-top: 1rem; 
+    }
+    .hero-text-content {
+      padding: 0 5%; /* Maintained side padding for text content */
     }
     .hero-text { 
       font-size: 1.75rem;
@@ -145,6 +147,8 @@
         color: var(--text-color);
         margin-bottom: 0; 
         width: 100%;
+        padding: 0 5%;
+        box-sizing: border-box;
     }
     .announcement-text {
         font-size: 1rem; 
@@ -192,60 +196,48 @@
     .fade-in-element.visible {
         opacity: 1;
     }
-
-    /* === SWIPER SLIDER STYLES === */
-    .swiper-container {
+    
+    /* === NEW STYLES FOR IMAGE SLIDER === */
+    .slider-container {
       width: 100%;
-      height: 60vh; /* Adjust height as needed */
-      margin-top: 2rem;
-      position: relative;
-      overflow: hidden; /* Ensure images don't overflow */
+      overflow-x: scroll;
+      cursor: grab;
+      -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+      scrollbar-width: none; /* For Firefox */
+      margin-top: 3rem; /* Spacing below hero text */
+      padding: 0 5%; /* Horizontal padding for start and end */
+      box-sizing: border-box;
     }
-
-    .swiper-slide {
-      text-align: center;
-      font-size: 18px;
-      background: var(--bg-color);
+    .slider-container::-webkit-scrollbar {
+      display: none; /* For Chrome, Safari, and Opera */
+    }
+    .slider-container.active {
+      cursor: grabbing;
+    }
+    .slider-track {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      color: var(--text-color); /* To make slide text visible if any */
-      flex-direction: column; /* For text under image */
+      gap: 1.5rem; /* Space between images */
+      width: max-content; /* Allow track to be as wide as its content */
     }
-
-    .swiper-slide img {
-      display: block;
-      width: auto; /* Maintain aspect ratio */
-      max-height: 85%; /* Adjust image size within slide */
-      object-fit: contain;
-      margin-bottom: 10px; /* Space between image and text */
+    .slider-item {
+      flex-shrink: 0;
+      width: 300px;
+      height: 450px;
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: #333; /* Placeholder bg */
     }
-
-    .swiper-slide .slide-title {
-        font-family: 'Cinzel', serif;
-        font-size: 1.2rem;
-        color: var(--text-color);
+    .slider-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none; /* Prevents image dragging interference */
     }
-    /* Swiper Navigation (arrows) */
-    .swiper-button-next,
-    .swiper-button-prev {
-      color: var(--text-color); /* Gold-brown arrows */
-      opacity: 0.7;
-      transition: opacity 0.3s ease;
-    }
-
-    .swiper-button-next:hover,
-    .swiper-button-prev:hover {
-      opacity: 1;
-    }
-    /* Swiper Pagination (dots) */
-    .swiper-pagination-bullet {
-      background: var(--text-color); /* Gold-brown dots */
-      opacity: 0.5;
-    }
-    .swiper-pagination-bullet-active {
-      background: var(--text-color);
-      opacity: 1;
+    @media (max-width: 768px) {
+      .slider-item {
+        width: 65vw;
+        height: 85vw;
+      }
     }
   </style>
 </head>
@@ -263,8 +255,7 @@
     <div class="brand-name-reveal" id="brand-name">RICHÉ EVORAH</div>
   </div>
 
-  <div id="page-transition-overlay"></div> 
-  <div class="content-wrapper" id="content-wrapper">
+  <div id="page-transition-overlay"></div> <div class="content-wrapper" id="content-wrapper">
     <canvas id="canvas"></canvas>
     <audio id="background-audio" loop>
       <source src="background-music.mp3" type="audio/mpeg">
@@ -305,36 +296,15 @@
           <p class="fade-in-element">Timeless Luxury, Unrivaled Elegance.</p>
         </div>
 
-        <div class="swiper-container fade-in-element">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="https://image.pollinations.ai/prompt/A%20hyper-realistic,%20cinematic%20macro%20photograph%20of%20a%20Rich%C3%A9%20Evorah%20%22Championship%20Edition%22%20DTF%20printed%20tee.%20The%20image%20is%20a%20wide%20crop%20of%20the%20t-shirt%20fabric,%20with%20the%20graphic%20print%20clearly%20visible.%20The%20tee%20is%20subtly%20draped%20to%20create%20a%20few%20soft,%20natural%20wrinkles%20or%20folds%20across%20the%20print,%20demonstrating%20that%20the%20print%20moves%20and%20feels%20like%20part%20of%20the%20fabric.%20The%20lighting%20is%20soft%20and%20cinematic,%20highlighting%20the%20texture%20of%20both%20the%20print%20and%20the%20cotton,%20showing%20no%20cracking%20or%20stiffness.%20It%20emphasizes%20a%20%22worn-in%20luxury%22%20feel.%20The%20color%20palette%20matches%20the%20brand's%20beige%20and%20gold-brown%20tones.%20High-fashion%20editorial%20style.%20" alt="Riché Evorah Tee - Worn Masterpiece">
-                    <div class="slide-title">The Worn Masterpiece</div>
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://image.pollinations.ai/prompt/A%20hyper-realistic,%20cinematic%20macro%20photograph%20of%20a%20Rich%C3%A9%20Evorah%20%22Championship%20Edition%22%20DTF%20printed%20tee.%20The%20shot%20is%20a%20super%20close-up%20focusing%20on%20the%20driver's%20helmet%20and%20part%20of%20the%20race%20car%20from%20the%20graphic%20print,%20ensuring%20the%20style%20of%20the%20car%20matches%20the%20previous%20image.%20The%20lighting%20is%20crisp%20and%20clean,%20highlighting%20the%20fine%20lines%20and%20color%20vibrancy%20of%20the%20DTF%20print.%20Shallow%20depth%20of%20field%20with%20only%20the%20specific%20detail%20in%20sharp%20focus.%20The%20color%20palette%20matches%20the%20brand's%20beige%20and%20gold-brown%20tones.%20High-fashion%20editorial%20style.%20" alt="Riché Evorah Tee - Championship Detail">
-                    <div class="slide-title">The Championship Detail</div>
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://image.pollinations.ai/prompt/A%20hyper-realistic,%20cinematic%20close-up%20editorial%20photo%20for%20a%20Rich%C3%A9%20Evorah%20polo%20shirt.%20The%20shot%20focuses%20on%20the%20back%20of%20a%20model's%20neck,%20showcasing%20the%20sharp,%20perfectly%20constructed%20collar%20of%20a%20dark%20green%20and%20beige%20striped%20polo.%20The%20polo%20is%20worn%20by%20a%20model%20standing%20on%20a%20golf%20course.%20The%20image%20captures%20the%20natural,%20slightly%20tilted%20drape%20of%20the%20polo%20as%20if%20in%20motion.%20The%20background%20is%20the%20soft,%20out-of-focus%20green%20of%20the%20golf%20fairway%20at%20golden%20hour.%20The%20lighting%20is%20cinematic,%20matching%20the%20brand's%20beige%20and%20gold-brown%20color%20palette.%20High-fashion%20editorial%20style.%20" alt="Riché Evorah Polo - Collar & Green">
-                    <div class="slide-title">The Collar & The Green</div>
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://image.pollinations.ai/prompt/A%20hyper-realistic,%20cinematic%20editorial%20fashion%20photograph%20of%20eight%20young,%20stylish%20models%20(6%20males,%202%20females)%20in%20a%20single%20frame.%20The%20scene%20is%20set%20in%20the%20grand,%20opulent%20lobby%20of%20a%20historic,%20five-star%20hotel,%20featuring%20high%20ceilings,%20marble%20floors,%20dark%20wood%20accents,%20and%20a%20large%20chandelier.%20On%20the%20left%20side%20of%20the%20frame,%20four%20%22Old%20Money%22-style%20models%20are%20casually%20gathered%20around%20a%20luggage%20trolley%20with%20vintage-style%20trunks,%20dressed%20in%20classic,%20refined%20attire%20that%20reflects%20%22honed%22%20taste.%20On%20the%20right%20side,%20four%20%22Modern%20Riche%22-style%20models%20are%20in%20another%20part%20of%20the%20lobby,%20perhaps%20near%20a%20sleek%20check-in%20desk,%20wearing%20more%20dynamic,%20contemporary%20attire%20that%20feels%20%22Gen%20Z%22%20and%20luxurious.%20The%20lighting%20is%20cinematic,%20with%20soft%20golden%20tones.%20The%20overall%20color%20palette%20is%20aligned%20with%20the%20brand's%20beige%20and%20gold-brown%20tones.%20High-fashion%20magazine%20cover%20style,%20aspirational%20luxury%20aesthetic,%20realistic%20photography.%20" alt="Riché Evorah - The Two Houses of Riché">
-                    <div class="slide-title">The Two Houses: Grand Lobby</div>
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://image.pollinations.ai/prompt/A%20hyper-realistic,%20cinematic%20editorial%20fashion%20photograph%20of%20eight%20young,%20stylish%20models%20(6%20males,%202%20females)%20in%20a%20single%20frame.%20The%20scene%20is%20set%20in%20an%20exclusive,%20minimalist%20art%20gallery%20at%20night.%20On%20the%20left%20side,%20four%20%22Old%20Money%22-style%20models%20are%20observing%20a%20classic%20painting,%20dressed%20in%20classic,%20refined%20attire%20that%20reflects%20%22honed%22%20taste.%20On%20the%20right%20side,%20four%20%22Modern%20Riche%22-style%20models%20are%20gathered%20near%20a%20bold,%20contemporary%20sculpture,%20wearing%20more%20dynamic,%20contemporary%20attire%20that%20feels%20%22Gen%20Z%22%20and%20luxurious.%20The%20lighting%20is%20dramatic,%20spotlighting%20the%20models%20and%20artworks.%20The%20overall%20color%20palette%20is%20aligned%20with%20the%20brand's%20beige%20and%20gold-brown%20tones.%20High-fashion%20magazine%20cover%20style,%20aspirational%20luxury%20aesthetic,%20realistic%20photography.%20" alt="Riché Evorah - The Two Houses of Riché - Art Gala">
-                    <div class="slide-title">The Two Houses: Art Gala</div>
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://image.pollinations.ai/prompt/A%20hyper-realistic,%20cinematic%20editorial%20fashion%20photograph%20of%20eight%20young,%20stylish%20models%20(6%20males,%202%20females)%20in%20a%20single%20frame.%20The%20scene%20is%20set%20on%20a%20luxurious%20rooftop%20terrace%20at%20dusk,%20with%20the%20city%20skyline%20behind%20them.%20On%20the%20left%20side,%20four%20%22Old%20Money%22-style%20models%20are%20seated%20comfortably%20on%20elegant%20outdoor%20lounge%20furniture,%20dressed%20in%20classic,%20refined%20attire%20that%20reflects%20%22honed%22%20taste.%20On%20the%20right%20side,%20four%20%22Modern%20Riche%22-style%20models%20are%20standing%20near%20the%20edge%20of%20the%20terrace,%20looking%20out%20over%20the%20city%20with%20a%20more%20adventurous%20and%20bold%20energy,%20wearing%20more%20dynamic,%20contemporary%20attire%20that%20feels%20%22Gen%20Z%22%20and%20luxurious.%20The%20lighting%20is%20cinematic,%20capturing%20the%20dusk%20skyline.%20The%20overall%20color%20palette%20is%20aligned%20with%20the%20brand's%20beige%20and%20gold-brown%20tones.%20High-fashion%20magazine%20cover%20style,%20aspirational%20luxury%20aesthetic,%20realistic%20photography.%20" alt="Riché Evorah - The Two Houses of Riché - Rooftop Terrace">
-                    <div class="slide-title">The Two Houses: Rooftop Terrace</div>
-                </div>
-            </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
+        <div class="slider-container fade-in-element" id="image-slider">
+          <div class="slider-track">
+            <div class="slider-item"><img src="https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 1"></div>
+            <div class="slider-item"><img src="https://images.unsplash.com/photo-1558502013-149d153358a9?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 2"></div>
+            <div class="slider-item"><img src="https://images.unsplash.com/photo-1620799140408-edc6d5f9650d?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 3"></div>
+            <div class="slider-item"><img src="https://images.unsplash.com/photo-1588117269559-866494441815?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 4"></div>
+            <div class="slider-item"><img src="https://images.unsplash.com/photo-1616559557321-c26615509a24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 5"></div>
+            <div class="slider-item"><img src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=800" alt="Luxury Product 6"></div>
+          </div>
         </div>
         </section>
     </main>
@@ -343,8 +313,6 @@
       <p class="fade-in-element">© 2025 Riché Evorah</p>
     </footer>
   </div>
-
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
   <script>
     window.addEventListener('load', () => {
@@ -378,7 +346,7 @@
         function animate3D() {
           requestAnimationFrame(animate3D);
           particlesMesh.rotation.y += scrollSpeed;
-          scrollSpeed *= 0.95;  
+          scrollSpeed *= 0.95; 
           particlesMesh.rotation.y += 0.0002;
           renderer.render(scene, camera);
         }
@@ -492,41 +460,36 @@
             // This is handled by the preloader or the fade-in-element class on initial render
         }
       });
+      
+      // === NEW JAVASCRIPT FOR SLIDER DRAG-TO-SCROLL ===
+      const slider = document.getElementById('image-slider');
+      if (slider) {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
 
-      // Initialize Swiper
-      const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 1, // Show one slide at a time
-        spaceBetween: 30, // Space between slides
-        loop: true, // Enable infinite loop
-        autoplay: {
-            delay: 4000, // Autoplay slides every 4 seconds
-            disableOnInteraction: false, // Keep autoplaying after user interaction
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-            768: {
-                slidesPerView: 3, // Show 3 slides on screens >= 768px
-                spaceBetween: 20,
-            },
-            1024: {
-                slidesPerView: 4, // Show 4 slides on screens >= 1024px
-                spaceBetween: 30,
-            },
-        },
-        // Enable fade-in for Swiper elements
-        on: {
-            init: function () {
-                document.querySelector('.swiper-container').classList.add('visible');
-            }
-        }
-      });
+        slider.addEventListener('mousedown', (e) => {
+          isDown = true;
+          slider.classList.add('active');
+          startX = e.pageX - slider.offsetLeft;
+          scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', () => {
+          isDown = false;
+          slider.classList.remove('active');
+        });
+        slider.addEventListener('mouseup', () => {
+          isDown = false;
+          slider.classList.remove('active');
+        });
+        slider.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - slider.offsetLeft;
+          const walk = (x - startX) * 2; // The multiplier makes scrolling feel faster
+          slider.scrollLeft = scrollLeft - walk;
+        });
+      }
     });
   </script>
 </body>
