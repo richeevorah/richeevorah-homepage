@@ -123,7 +123,7 @@
 
     .hero-section {
       text-align: center;
-      padding: 2rem 0 4rem 0; /* Adjusted top padding */
+      padding: 2rem 0 4rem 0;
       min-height: 80vh; 
       display: flex;
       flex-direction: column;
@@ -184,21 +184,45 @@
         list-style: none;
         padding: 0;
         margin: 0;
-        gap: 0.5rem;
+        gap: 1.5rem; /* Increased gap for images */
+    }
+    .category-nav li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .category-nav li img {
+        width: 40px; /* Small image size */
+        height: 40px;
+        object-fit: contain; /* Ensures image isn't cropped */
+        margin-bottom: 0.5rem; /* Space between image and text */
+        filter: grayscale(100%) brightness(150%) sepia(20%) hue-rotate(15deg) saturate(200%); /* Gold/Sepia tone */
+        transition: filter 0.3s ease;
     }
     .category-nav li a {
         font-family: 'Cinzel', serif;
         font-size: 0.9rem;
         color: var(--text-color);
         text-decoration: none;
-        padding: 0.5rem 1rem;
+        padding: 0; /* Remove padding here, handled by gap */
         transition: opacity 0.3s ease;
         white-space: nowrap;
         opacity: 0.8;
     }
-    .category-nav li a:hover {
+    .category-nav li a:hover,
+    .category-nav li a:hover + img { /* Hover effect on text affecting image */
         opacity: 1;
+        filter: grayscale(0%) brightness(100%) sepia(0%); /* Remove filter on hover */
     }
+    /* Reverse hover for image affecting text */
+    .category-nav li img:hover {
+      filter: grayscale(0%) brightness(100%) sepia(0%);
+    }
+    .category-nav li img:hover + a {
+      opacity: 1;
+    }
+
 
     .slider-container {
       width: 100%;
@@ -251,6 +275,13 @@
         flex-wrap: nowrap;
         justify-content: flex-start;
         padding: 0 5%;
+      }
+      .category-nav li img {
+        width: 30px;
+        height: 30px;
+      }
+      .category-nav li a {
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -310,13 +341,34 @@
         <div class="category-nav-wrapper fade-in-element">
             <nav class="category-nav">
                 <ul>
-                    <li><a href="#">L'Essentiel Riché</a></li>
-                    <li><a href="#">Riché Air</a></li>
-                    <li><a href="#">Championship Collection</a></li>
-                    <li><a href="#">L'Embrace Riché</a></li>
-                    <li><a href="#">La Structure Riché</a></li>
-                    <li><a href="#">La Base Riché</a></li>
-                    <li><a href="#">BE RICHÉ</a></li>
+                    <li>
+                      <img src="https://images.unsplash.com/photo-1620799140408-edc6d5f9650d?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100&h=100" alt="L'Essentiel Riché">
+                      <a href="#">L'Essentiel Riché</a>
+                    </li>
+                    <li>
+                      <img src="https://images.unsplash.com/photo-1579750011855-46b0a2bf4753?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100&h=100" alt="Riché Air">
+                      <a href="#">Riché Air</a>
+                    </li>
+                    <li>
+                      <img src="https://images.unsplash.com/photo-1620799140408-edc6d5f9650d?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100&h=100" alt="Championship Collection">
+                      <a href="#">Championship Collection</a>
+                    </li>
+                    <li>
+                      <img src="https://images.unsplash.com/photo-1542848135-21d3f237ef60?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100&h=100" alt="L'Embrace Riché">
+                      <a href="#">L'Embrace Riché</a>
+                    </li>
+                    <li>
+                      <img src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100&h=100" alt="La Structure Riché">
+                      <a href="#">La Structure Riché</a>
+                    </li>
+                    <li>
+                      <img src="https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100&h=100" alt="La Base Riché">
+                      <a href="#">La Base Riché</a>
+                    </li>
+                    <li>
+                      <img src="https://images.unsplash.com/photo-1616559557321-c26615509a24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=100&h=100" alt="BE RICHÉ">
+                      <a href="#">BE RICHÉ</a>
+                    </li>
                 </ul>
             </nav>
         </div>
