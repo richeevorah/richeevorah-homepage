@@ -71,12 +71,40 @@
     
     .close-btn { position: absolute; top: 1.5rem; right: 2rem; font-size: 2.5rem; color: var(--text-color); cursor: pointer; }
 
+    .music-toggle {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      position: relative;
+      margin-left: 1rem; /* Adjust spacing */
+    }
+    .music-waves, .music-slash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      fill: var(--text-color);
+    }
+    .music-waves path { animation: wave 1.5s linear infinite; transform-origin: bottom; }
+    .music-waves path:nth-child(2) { animation-delay: -0.3s; }
+    .music-waves path:nth-child(3) { animation-delay: -0.6s; }
+    .music-waves path:nth-child(4) { animation-delay: -0.9s; }
+    .music-slash { opacity: 0; transition: opacity 0.3s ease; }
+    .music-toggle.muted .music-waves path { animation-play-state: paused; }
+    .music-toggle.muted .music-slash { opacity: 1; }
+
+    @keyframes wave {
+      0% { transform: scaleY(0.3); } 33% { transform: scaleY(1.0); }
+      66% { transform: scaleY(0.5); } 100% { transform: scaleY(0.3); }
+    }
+
     section { padding: 2rem 0; position: relative; z-index: 10; }
     footer { text-align: center; padding: 2rem; position: relative; z-index: 10; }
 
     .hero-section {
       text-align: center;
-      padding: 2rem 0 0 0; /* Reduced bottom padding */
+      padding: 2rem 0 0 0;
       min-height: 80vh; 
       display: flex;
       flex-direction: column;
@@ -84,7 +112,7 @@
     }
     .hero-text-content {
       padding: 0 5%;
-      margin-bottom: 4rem; /* Space before first nav */
+      margin-bottom: 4rem;
     }
     .hero-text { 
       font-size: 1.75rem;
@@ -131,7 +159,6 @@
         text-decoration: none; white-space: nowrap;
     }
     
-    /* === SLIDER & SECTION TITLE STYLES === */
     .section-title {
         font-family: 'GFS Didot', serif;
         font-size: 2.5rem;
@@ -149,16 +176,14 @@
     .slider-container.active { cursor: grabbing; }
     .slider-track { display: flex; gap: 1.5rem; width: max-content; }
     
-    /* Style for image-based slider items */
     .slider-item {
       flex-shrink: 0; width: 300px; height: 450px;
       border-radius: 12px; overflow: hidden; background-color: #333;
-      position: relative; /* For text overlay */
+      position: relative;
     }
     .slider-item img {
       width: 100%; height: 100%; object-fit: cover; pointer-events: none;
     }
-    /* Style for text-based info items in sliders */
     .info-item {
       flex-shrink: 0; width: 320px; height: 450px;
       border-radius: 12px; background-color: rgba(0,0,0,0.02);
@@ -174,7 +199,6 @@
         font-size: 1rem; line-height: 1.6; opacity: 0.8;
     }
 
-    /* Media Queries */
     @media (max-width: 768px) {
       .nav-links-desktop { display: none; }
       .nav-logo { font-size: 1.2rem; }
@@ -218,6 +242,9 @@
   <div id="page-transition-overlay"></div>
   <div class="content-wrapper" id="content-wrapper">
     <canvas id="canvas"></canvas>
+    <audio id="background-audio" loop>
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
     
     <nav class="main-nav">
         <div class="nav-left-cluster">
@@ -229,6 +256,10 @@
                 <a href="#" class="transition-link">Collections</a>
                 <a href="#" class="transition-link">About</a>
                 <a href="#" class="transition-link">Contact</a>
+            </div>
+            <div class="music-toggle" id="music-toggle">
+                <svg class="music-waves" viewBox="0 0 24 24"><path d="M3 10h3v4H3z M8 6h3v12H8z M13 2h3v20h-3z M18 6h3v12h-3z"></path></svg>
+                <svg class="music-slash" viewBox="0 0 24 24"><path d="M4.75 3.25a.75.75 0 00-1.5 0v17.5a.75.75 0 001.5 0V3.25z" transform="rotate(45 12 12)"></path></svg>
             </div>
         </div>
     </nav>
@@ -391,11 +422,23 @@
         window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
       } catch (error) { console.error('Error with 3D scene:', error); }
 
+      const audio = document.getElementById('background-audio');
       const hamburger = document.getElementById('hamburger');
       const navLinksMobile = document.getElementById('nav-links-mobile');
       const closeBtn = document.getElementById('close-btn');
       hamburger.addEventListener('click', () => { navLinksMobile.classList.add('active'); });
       closeBtn.addEventListener('click', () => { navLinksMobile.classList.remove('active'); });
+
+      const musicToggle = document.getElementById('music-toggle');
+      musicToggle.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          musicToggle.classList.remove('muted');
+        } else {
+          audio.pause();
+          musicToggle.classList.add('muted');
+        }
+      });
       
       const panelLeft = document.getElementById('panel-1');
       const panelMiddle = document.getElementById('panel-2');
@@ -436,6 +479,21 @@
         contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
         fadeInContent();
+        
+        let playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            musicToggle.classList.remove('muted');
+          }).catch(error => {
+            musicToggle.classList.add('muted');
+            document.body.addEventListener('click', () => {
+              if (audio.paused) {
+                audio.play();
+                musicToggle.classList.remove('muted');
+              }
+            }, { once: true });
+          });
+        }
         
         setTimeout(() => {
           preloader.style.display = 'none';
