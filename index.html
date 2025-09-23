@@ -112,7 +112,7 @@
     }
     .hero-text-content {
       padding: 0 5%;
-      margin-bottom: 4rem;
+      margin-bottom: 0; /* MODIFIED: Removed bottom margin */
     }
     .hero-text { 
       font-size: 1.75rem;
@@ -141,30 +141,12 @@
     .fade-in-element { opacity: 0; transition: opacity 1s ease-in; }
     .fade-in-element.visible { opacity: 1; }
     
-    .category-nav-wrapper { width: 100%; margin: 0 0 4rem 0; }
-    .category-nav ul {
-        display: flex; justify-content: center; align-items: flex-start;
-        flex-wrap: wrap; list-style: none; padding: 0; margin: 0; gap: 4rem;
-    }
-    .category-nav li {
-        display: flex; flex-direction: column; align-items: center;
-        text-align: center; width: 170px; opacity: 0.8; transition: opacity 0.3s ease;
-    }
-    .category-nav li:hover { opacity: 1; }
-    .category-nav li img {
-        width: 160px; height: 120px; object-fit: contain; margin-bottom: 1rem;
-    }
-    .category-nav li a {
-        font-family: 'Cinzel', serif; font-size: 1rem; color: var(--text-color);
-        text-decoration: none; white-space: nowrap;
-    }
-    
     .section-title {
         font-family: 'GFS Didot', serif;
-        font-size: 2.5rem;
+        font-size: 1.75rem; /* MODIFIED: Matched hero-text size */
         font-weight: 400;
         text-align: center;
-        margin: 5rem 0 2.5rem 0;
+        margin: 3rem 0 2.5rem 0; /* MODIFIED: Reduced top margin */
         padding: 0 5%;
     }
     .slider-container {
@@ -253,15 +235,11 @@
       .nav-links-mobile a { margin: 2rem 0; font-size: 1.5rem; color: var(--text-color); text-decoration: none; }
       .hamburger { display: block; }
       .hero-text { font-size: 1.75rem !important; }
-
-      .category-nav-wrapper { overflow-x: auto; scrollbar-width: none; }
-      .category-nav-wrapper::-webkit-scrollbar { display: none; }
-      .category-nav ul { flex-wrap: nowrap; justify-content: flex-start; padding: 0 5%; gap: 2rem; }
-      .category-nav li { width: auto; }
-      .category-nav li img { width: 120px; height: 90px; }
-      .category-nav li a { font-size: 0.9rem; }
       
-      .section-title { font-size: 2rem; margin-top: 4rem; }
+      .section-title { 
+        font-size: 1.75rem; /* MODIFIED: Matched hero-text size for mobile */
+        margin-top: 3rem; /* MODIFIED: Reduced top margin for mobile */
+      }
       .slider-item, .info-item { width: 70vw; height: 400px; }
       .modal-content { padding: 2rem; width: 80%; }
     }
