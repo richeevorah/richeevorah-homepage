@@ -131,10 +131,10 @@
       margin-top: 10px;
       margin-bottom: 1rem;
     }
-#preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
+    #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; }
     .panel { flex: 1; height: 100%; background-color: #1A1A1A; transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1); }
     .panel.hidden { transform: translateY(-100%); }
-    .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; }
+    .overlay-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 10000; transition: opacity 0.5s ease; }
     .countdown-number { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 25vw; color: var(--text-color); opacity: 0; }
     .countdown-number.visible { animation: flash 1s ease-in-out forwards; }
     @keyframes flash { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
@@ -427,9 +427,9 @@
       </div>
   </div>
 <script>
-    window.addEventListener('load', () => {
+    // MODIFIED: Switched from 'load' to 'DOMContentLoaded' for much faster initial startup.
+    document.addEventListener('DOMContentLoaded', () => {
 
-      // MODIFIED: Entire 3D background script is wrapped in a function to be called later
       function init3DBackground() {
         try {
           const canvas = document.getElementById('canvas');
@@ -468,12 +468,12 @@
           animate3D();
           window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
           
-          // Fade in the canvas
           canvas.classList.add('visible');
 
         } catch (error) { console.error('Error with 3D scene:', error); }
       }
 
+      // Get all necessary elements
       const audio = document.getElementById('background-audio');
       const hamburger = document.getElementById('hamburger');
       const navLinksMobile = document.getElementById('nav-links-mobile');
@@ -482,7 +482,48 @@
       const musicModal = document.getElementById('music-prompt-modal');
       const modalYesBtn = document.getElementById('modal-yes-btn');
       const modalNoBtn = document.getElementById('modal-no-btn');
+      const preloader = document.getElementById('preloader');
+      const overlayContent = document.getElementById('overlay-content');
+      const contentWrapper = document.getElementById('content-wrapper');
+      const brandName = document.getElementById('brand-name');
+      const pageTransitionOverlay = document.getElementById('page-transition-overlay');
 
+      // --- NEW, FASTER PRELOADER LOGIC ---
+      // 1. Start the animation immediately by making the brand name visible.
+      brandName.classList.add('visible');
+
+      // 2. After a short brand reveal, hide the preloader panels.
+      setTimeout(() => {
+          document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+      }, 1200); // A 1.2-second reveal is enough for a premium feel.
+
+      // 3. As the panels slide away, fade in the main content.
+      setTimeout(() => {
+          overlayContent.style.opacity = 0;
+          contentWrapper.classList.add('visible');
+          document.body.classList.remove('preloader-active');
+          
+          // Fade in all elements with the .fade-in-element class
+          document.querySelectorAll('.fade-in-element').forEach(el => el.classList.add('visible'));
+
+          // Initialize the 3D background now that the site is visible
+          init3DBackground();
+          
+          // Show the music prompt after a brief moment
+          setTimeout(() => {
+              musicModal.classList.add('visible');
+          }, 500);
+          
+          // Remove the preloader elements from the DOM after they've finished animating
+          setTimeout(() => {
+            preloader.style.display = 'none';
+            overlayContent.style.display = 'none';
+          }, 1000);
+
+      }, 1800); // Start this shortly after the brand reveal begins.
+      // --- END OF NEW PRELOADER LOGIC ---
+
+      // --- Standard Event Listeners ---
       hamburger.addEventListener('click', () => { navLinksMobile.classList.add('active'); });
       closeBtn.addEventListener('click', () => { navLinksMobile.classList.remove('active'); });
       
@@ -495,61 +536,6 @@
           musicToggle.classList.add('muted');
         }
       });
-      
-      const panelLeft = document.getElementById('panel-1');
-      const panelMiddle = document.getElementById('panel-2');
-      const panelRight = document.getElementById('panel-3');
-      const num3 = document.getElementById('num3');
-      const num2 = document.getElementById('num2');
-      const num1 = document.getElementById('num1');
-      const brandName = document.getElementById('brand-name');
-      const contentWrapper = document.getElementById('content-wrapper');
-      const preloader = document.getElementById('preloader');
-      const overlayContent = document.getElementById('overlay-content');
-      const pageTransitionOverlay = document.getElementById('page-transition-overlay');
-
-      function fadeInContent() {
-        const fadeElements = document.querySelectorAll('.fade-in-element');
-        fadeElements.forEach(element => {
-          element.classList.add('visible');
-        });
-      }
-
-      setTimeout(() => {
-        num3.classList.add('visible');
-        setTimeout(() => panelLeft.classList.add('hidden'), 1000);
-      }, 500);
-      setTimeout(() => {
-        num2.classList.add('visible');
-        setTimeout(() => panelRight.classList.add('hidden'), 1000);
-      }, 1800);
-      setTimeout(() => {
-        num1.classList.add('visible');
-        setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
-      }, 3100);
-      setTimeout(() => {
-        brandName.classList.add('visible');
-      }, 4300);
-      setTimeout(() => {
-        overlayContent.style.opacity = 0;
-        contentWrapper.classList.add('visible');
-        document.body.classList.remove('preloader-active');
-        fadeInContent();
-        
-        // MODIFIED: Initialize the 3D background only AFTER the site is visible
-        setTimeout(() => {
-          init3DBackground();
-        }, 500); // A small delay to let the page settle
-
-        setTimeout(() => {
-            musicModal.classList.add('visible');
-        }, 1000);
-        
-        setTimeout(() => {
-          preloader.style.display = 'none';
-          overlayContent.style.display = 'none';
-        }, 1200);
-      }, 5800);
       
       modalYesBtn.addEventListener('click', () => {
           audio.play();
@@ -578,7 +564,7 @@
       window.addEventListener('pageshow', function(event) {
         if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
           pageTransitionOverlay.classList.remove('active');
-          fadeInContent();
+          document.querySelectorAll('.fade-in-element').forEach(el => el.classList.add('visible'));
         }
       });
       
