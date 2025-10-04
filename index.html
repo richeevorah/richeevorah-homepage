@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Riché Evorah</title>
+
+  <link rel="preload" as="image" href="riche-category-knitwear.png">
+  <link rel="preload" as="image" href="riche-category-oversized-tees.png">
+  <link rel="preload" as="image" href="riche-category-tailored-trousers.png">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -425,7 +435,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.position.z = 50;
         const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 500;
+        const particlesCount = 250;
         const posArray = new Float32Array(particlesCount * 3);
         for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -494,21 +504,22 @@
           element.classList.add('visible');
         });
       }
-setTimeout(() => {
+
+      setTimeout(() => {
         num3.classList.add('visible');
-        setTimeout(() => panelLeft.classList.add('hidden'), 1000);
-      }, 500);
+        setTimeout(() => panelLeft.classList.add('hidden'), 500);
+      }, 250);
       setTimeout(() => {
         num2.classList.add('visible');
-        setTimeout(() => panelRight.classList.add('hidden'), 1000);
-      }, 1800);
+        setTimeout(() => panelRight.classList.add('hidden'), 500);
+      }, 900);
       setTimeout(() => {
         num1.classList.add('visible');
-        setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
-      }, 3100);
+        setTimeout(() => panelMiddle.classList.add('hidden'), 500);
+      }, 1550);
       setTimeout(() => {
         brandName.classList.add('visible');
-      }, 4300);
+      }, 2150);
       setTimeout(() => {
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
@@ -523,7 +534,7 @@ setTimeout(() => {
           preloader.style.display = 'none';
           overlayContent.style.display = 'none';
         }, 1200);
-      }, 5800);
+      }, 2900);
       
       modalYesBtn.addEventListener('click', () => {
           audio.play();
