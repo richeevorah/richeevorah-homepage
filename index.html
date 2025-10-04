@@ -506,7 +506,6 @@
         });
       }
 
-      /* MODIFIED: Reverted to original 5.8 second preloader */
       setTimeout(() => {
         num3.classList.add('visible');
         setTimeout(() => panelLeft.classList.add('hidden'), 1000);
@@ -524,7 +523,7 @@
       }, 4300);
       setTimeout(() => {
         overlayContent.style.opacity = 0;
-        content-wrapper.classList.add('visible');
+        contentWrapper.classList.add('visible'); /* FIXED: Corrected variable name from content-wrapper */
         document.body.classList.remove('preloader-active');
         fadeInContent();
         
