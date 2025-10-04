@@ -4,11 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Riché Evorah</title>
-
-  <link rel="preload" as="image" href="riche-category-knitwear.png">
-  <link rel="preload" as="image" href="riche-category-oversized-tees.png">
-  <link rel="preload" as="image" href="riche-category-tailored-trousers.png">
-
+  
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -334,26 +330,26 @@
         <div class="section-title fade-in-element">Riché Categories</div>
         <div class="slider-container fade-in-element">
           <div class="slider-track">
-            <div class="slider-item"><img src="riche-category-knitwear.png" alt="Riché Category: Knitwear"></div>
-            <div class="slider-item"><img src="riche-category-oversized-tees.png" alt="Riché Category: Oversized Tees"></div>
-            <div class="slider-item"><img src="riche-category-tailored-trousers.png" alt="Riché Category: Tailored Trousers"></div>
-            <div class="slider-item"><img src="riche-category-signature-jackets.png" alt="Riché Category: Signature Jackets"></div>
-            <div class="slider-item"><img src="riche-category-summer-essentials.png" alt="Riché Category: Summer Essentials"></div>
-            <div class="slider-item"><img src="riche-category-winter-layers.png" alt="Riché Category: Winter Layers"></div>
-            <div class="slider-item"><img src="riche-category-capsule-collection.png" alt="Riché Category: Capsule Collection"></div>
+            <div class="slider-item"><img loading="lazy" src="riche-category-knitwear.png" alt="Riché Category: Knitwear"></div>
+            <div class="slider-item"><img loading="lazy" src="riche-category-oversized-tees.png" alt="Riché Category: Oversized Tees"></div>
+            <div class="slider-item"><img loading="lazy" src="riche-category-tailored-trousers.png" alt="Riché Category: Tailored Trousers"></div>
+            <div class="slider-item"><img loading="lazy" src="riche-category-signature-jackets.png" alt="Riché Category: Signature Jackets"></div>
+            <div class="slider-item"><img loading="lazy" src="riche-category-summer-essentials.png" alt="Riché Category: Summer Essentials"></div>
+            <div class="slider-item"><img loading="lazy" src="riche-category-winter-layers.png" alt="Riché Category: Winter Layers"></div>
+            <div class="slider-item"><img loading="lazy" src="riche-category-capsule-collection.png" alt="Riché Category: Capsule Collection"></div>
           </div>
         </div>
 
         <div class="section-title fade-in-element">Iconic Pieces</div>
         <div class="slider-container fade-in-element">
           <div class="slider-track">
-            <div class="slider-item"><img src="iconic-piece-the-evorah-blazer.png" alt="Iconic Piece: The Evorah Blazer"></div>
-            <div class="slider-item"><img src="iconic-piece-the-air-tee.png" alt="Iconic Piece: The Air Tee"></div>
-            <div class="slider-item"><img src="iconic-piece-the-base-trouser.png" alt="Iconic Piece: The Base Trouser"></div>
-            <div class="slider-item"><img src="iconic-piece-lessentiel-shirt.png" alt="Iconic Piece: L'Essentiel Shirt"></div>
-            <div class="slider-item"><img src="iconic-piece-la-structure-coat.png" alt="Iconic Piece: La Structure Coat"></div>
-            <div class="slider-item"><img src="iconic-piece-the-legacy-knit.png" alt="Iconic Piece: The Legacy Knit"></div>
-            <div class="slider-item"><img src="iconic-piece-be-riche-statement.png" alt="Iconic Piece: Be Riché Statement"></div>
+            <div class="slider-item"><img loading="lazy" src="iconic-piece-the-evorah-blazer.png" alt="Iconic Piece: The Evorah Blazer"></div>
+            <div class="slider-item"><img loading="lazy" src="iconic-piece-the-air-tee.png" alt="Iconic Piece: The Air Tee"></div>
+            <div class="slider-item"><img loading="lazy" src="iconic-piece-the-base-trouser.png" alt="Iconic Piece: The Base Trouser"></div>
+            <div class="slider-item"><img loading="lazy" src="iconic-piece-lessentiel-shirt.png" alt="Iconic Piece: L'Essentiel Shirt"></div>
+            <div class="slider-item"><img loading="lazy" src="iconic-piece-la-structure-coat.png" alt="Iconic Piece: La Structure Coat"></div>
+            <div class="slider-item"><img loading="lazy" src="iconic-piece-the-legacy-knit.png" alt="Iconic Piece: The Legacy Knit"></div>
+            <div class="slider-item"><img loading="lazy" src="iconic-piece-be-riche-statement.png" alt="Iconic Piece: Be Riché Statement"></div>
           </div>
         </div>
 
@@ -435,7 +431,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.position.z = 50;
         const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 250;
+        const particlesCount = 500; /* MODIFIED: Reverted to 500 */
         const posArray = new Float32Array(particlesCount * 3);
         for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -507,19 +503,19 @@
 
       setTimeout(() => {
         num3.classList.add('visible');
-        setTimeout(() => panelLeft.classList.add('hidden'), 500);
-      }, 250);
+        setTimeout(() => panelLeft.classList.add('hidden'), 1000);
+      }, 500);
       setTimeout(() => {
         num2.classList.add('visible');
-        setTimeout(() => panelRight.classList.add('hidden'), 500);
-      }, 900);
+        setTimeout(() => panelRight.classList.add('hidden'), 1000);
+      }, 1800);
       setTimeout(() => {
         num1.classList.add('visible');
-        setTimeout(() => panelMiddle.classList.add('hidden'), 500);
-      }, 1550);
+        setTimeout(() => panelMiddle.classList.add('hidden'), 1000);
+      }, 3100);
       setTimeout(() => {
         brandName.classList.add('visible');
-      }, 2150);
+      }, 4300);
       setTimeout(() => {
         overlayContent.style.opacity = 0;
         contentWrapper.classList.add('visible');
@@ -534,7 +530,7 @@
           preloader.style.display = 'none';
           overlayContent.style.display = 'none';
         }, 1200);
-      }, 2900);
+      }, 5800);
       
       modalYesBtn.addEventListener('click', () => {
           audio.play();
