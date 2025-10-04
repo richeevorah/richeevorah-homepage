@@ -35,7 +35,8 @@
     .content-wrapper { opacity: 0; transition: opacity 0.8s ease-in; }
     .content-wrapper.visible { opacity: 1; }
     
-    #canvas { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 0; }
+    #canvas { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 0; opacity: 0; transition: opacity 1s ease-in; }
+    #canvas.visible { opacity: 1; }
     
     .main-nav {
       padding: 1.5rem 2rem;
@@ -427,43 +428,51 @@
   </div>
 <script>
     window.addEventListener('load', () => {
-      // 3D Pearl Field Script
-      try {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
-        renderer.setClearColor(0x000000, 0);
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.position.z = 50;
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 500;
-        const posArray = new Float32Array(particlesCount * 3);
-        for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const textureLoader = new THREE.TextureLoader();
-        const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
-        const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xB59A72, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
 
-        let scrollY = window.scrollY;
-        let scrollSpeed = 0;
-        window.addEventListener('scroll', () => {
-          const newScrollY = window.scrollY;
-          scrollSpeed = (newScrollY - scrollY) * 0.0001;
-          scrollY = newScrollY;
-        });
+      // MODIFIED: Entire 3D background script is wrapped in a function to be called later
+      function init3DBackground() {
+        try {
+          const canvas = document.getElementById('canvas');
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+          const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+          renderer.setClearColor(0x000000, 0);
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          camera.position.z = 50;
+          const particlesGeometry = new THREE.BufferGeometry();
+          const particlesCount = 500;
+          const posArray = new Float32Array(particlesCount * 3);
+          for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 100; }
+          particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+          const textureLoader = new THREE.TextureLoader();
+          const circleTexture = textureLoader.load('https://threejs.org/examples/textures/sprites/disc.png');
+          const particlesMaterial = new THREE.PointsMaterial({ size: 0.5, map: circleTexture, color: 0xB59A72, transparent: true, blending: THREE.AdditiveBlending, alphaTest: 0.5 });
+          const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+          scene.add(particlesMesh);
 
-        function animate3D() {
-          requestAnimationFrame(animate3D);
-          particlesMesh.rotation.y += scrollSpeed;
-          scrollSpeed *= 0.95; 
-          particlesMesh.rotation.y += 0.0002;
-          renderer.render(scene, camera);
-        }
-        animate3D();
-        window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-      } catch (error) { console.error('Error with 3D scene:', error); }
+          let scrollY = window.scrollY;
+          let scrollSpeed = 0;
+          window.addEventListener('scroll', () => {
+            const newScrollY = window.scrollY;
+            scrollSpeed = (newScrollY - scrollY) * 0.0001;
+            scrollY = newScrollY;
+          });
+
+          function animate3D() {
+            requestAnimationFrame(animate3D);
+            particlesMesh.rotation.y += scrollSpeed;
+            scrollSpeed *= 0.95; 
+            particlesMesh.rotation.y += 0.0002;
+            renderer.render(scene, camera);
+          }
+          animate3D();
+          window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+          
+          // Fade in the canvas
+          canvas.classList.add('visible');
+
+        } catch (error) { console.error('Error with 3D scene:', error); }
+      }
 
       const audio = document.getElementById('background-audio');
       const hamburger = document.getElementById('hamburger');
@@ -523,10 +532,15 @@
       }, 4300);
       setTimeout(() => {
         overlayContent.style.opacity = 0;
-        contentWrapper.classList.add('visible'); /* FIXED: Corrected variable name from content-wrapper */
+        contentWrapper.classList.add('visible');
         document.body.classList.remove('preloader-active');
         fadeInContent();
         
+        // MODIFIED: Initialize the 3D background only AFTER the site is visible
+        setTimeout(() => {
+          init3DBackground();
+        }, 500); // A small delay to let the page settle
+
         setTimeout(() => {
             musicModal.classList.add('visible');
         }, 1000);
